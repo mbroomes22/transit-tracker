@@ -7,7 +7,7 @@ The coolest dang train tracking program that you ever did see.
 
 ## Dependencies
 
-* [Ruby](https://www.ruby-lang.org/en/).  Written with version [2.7.0](https://www.ruby-lang.org/en/news/2019/12/25/ruby-2-7-0-released/) - *[docs](https://docs.ruby-lang.org/en/2.7.0/)*.
+* [Ruby](https://www.ruby-lang.org/en/).  Written with version [3.4.2](https://www.ruby-lang.org/en/news/2025/02/14/ruby-3-4-2-released/) - *[docs](https://docs.ruby-lang.org/en/3.4/)*.
 
 ## Usage
 
