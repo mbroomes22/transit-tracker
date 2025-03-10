@@ -2,6 +2,7 @@
 *.rbc
 .config
 /coverage/
+/db/seed.rb
 /InstalledFiles
 /pkg/
 /tmp/
