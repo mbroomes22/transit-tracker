@@ -1,5 +1,6 @@
 import map from './subway-map.jpg';
 import './stylesheets/App.css';
+// import LiveMap from './LiveMap.js';
 
 function MbtaTrainMap() {
   return (

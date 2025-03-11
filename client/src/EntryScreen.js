@@ -1,7 +1,14 @@
+import React from 'react';
 import logo from './mbta.png';
 import './stylesheets/App.css';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
-function EntryScreen() {
+function EntryScreen({onCheckboxChange}) {
+  const handleCheckboxChange = (event) => {
+    onCheckboxChange(event.target.checked);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -10,6 +17,11 @@ function EntryScreen() {
           Welcome to MBTA transit tracker.
           A project by Michelle Broomes.
         </p>
+        <FormControlLabel
+                className='checkbox'
+                control={<Checkbox onChange={handleCheckboxChange} color="primary" />}
+                label="Don't show this screen again"
+                />
       </header>
     </div>
   );
