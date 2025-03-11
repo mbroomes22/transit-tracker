@@ -1,17 +1,8 @@
-import logo from './mbta.png';
-import './stylesheets/App.css';
+import Welcome from './Welcome.js';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Welcome to MBTA transit tracker.
-          A project by Michelle Broomes.
-        </p>
-      </header>
-    </div>
+    <Welcome />
   );
 }
 
