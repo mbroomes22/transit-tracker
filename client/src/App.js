@@ -1,5 +1,5 @@
 import logo from './mbta.png';
-import './App.css';
+import './stylesheets/App.css';
 
 function App() {
   return (
