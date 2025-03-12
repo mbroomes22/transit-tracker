@@ -2,9 +2,10 @@ import React, {useState, useEffect} from 'react';
 import io from 'WebSocket.io-client';
 
 
-const BACKEND = 'dev';
+// const BACKEND = process.env.GEOPS_API_KEY;
+const BACKEND = 'geops-api'
 
-const SOCKET_URL = `wss://api.geops.io/tracker-ws/${BACKEND}`;
+const SOCKET_URL = `wss://api.geops.io/tracker-ws/dev?key=${BACKEND}/`;
 function LiveMap() {
     const [data, setData] = useState(null);
 
