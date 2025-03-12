@@ -1,9 +1,46 @@
-// import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
+import io from 'WebSocket.io-client';
 
 
-// function LiveMap() {
+const BACKEND = 'dev';
 
+const SOCKET_URL = `wss://api.geops.io/tracker-ws/${BACKEND}`;
+function LiveMap() {
+    const [data, setData] = useState(null);
 
-// }
+    useEffect(() => {
+        const socket = io(SOCKET_URL, {
+            transports: ['websocket']
+        });
 
-// export default LiveMap;
+        socket.on('connect', () => {
+            console.log('Connected to the server');
+        });
+
+        socket.on('message', (message) => {
+            console.log('Received message:', message);
+            setData(message);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from the server');
+        });
+
+        return () => {
+            socket.disconnect();
+        }
+    }, [])
+
+    return (
+        <div>
+            <h1>Live Map</h1>
+            {data ? (
+                <pre>{JSON.stringify(data, null, 2)}</pre>
+            ) : (
+                <p>Loading data...</p>
+            )}
+        </div>
+    );
+}
+
+export default LiveMap;
