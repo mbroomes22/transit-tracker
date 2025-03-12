@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: your_database_username
+  password: your_database_password
+
+development:
+  <<: *default
+  database: transit_tracker_development
+
+test:
+  <<: *default
+  database: transit_tracker_test
+
+production:
+  <<: *default
+  database: transit_tracker_production
+  username: transit_tracker
+  password: <%= ENV['TRANSIT_TRACKER_DATABASE_PASSWORD'] %>
