@@ -1,16 +1,6 @@
-require 'rubocop/rake_task'
+# Add your own tasks in files placed in lib/tasks ending in .rake,
+# for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
-task default: %w[lint test]
+require_relative "config/application"
 
-RuboCop::RakeTask.new(:lint) do |task|
-  task.patterns = ['lib/**/*.rb', 'test/**/*.rb']
-  task.fail_on_error = false
-end
-
-task :run do
-  ruby 'lib/cool_program.rb'
-end
-
-task :test do
-  ruby 'test/cool_program_test.rb'
-end
+Rails.application.load_tasks
