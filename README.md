@@ -16,9 +16,6 @@ Install deps: `gem install bundler && bundle install`.  Run `bundle exec rake` t
 
 To see live app go to webpage: 
 
-if running on local machine: can run test files `ruby lib/cool_program.rb` or `ruby test/cool_program_test.rb` to make sure code works locally. 
-
-
 APIs from (https://developer.geops.io/):
 Realtime Websocket API - To track Vehicle positions & stop sequences based on scheduled times & real time updates.
 Maps API - Obtains maps based on mapbox vector tiles.
