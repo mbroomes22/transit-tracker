@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :api do
+    get "mbta_schedule", to: "mbta_schedule#index"
+  end
   resources :trips
   resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
