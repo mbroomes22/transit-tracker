@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
 import EntryScreen from './EntryScreen.js';
 import MbtaTrainMap from './MbtaTrainMap.js';
 
@@ -42,7 +43,21 @@ function Welcome() {
     return (
         <div>
             {showWelcome && <div className="welcome-screen"><EntryScreen onCheckboxChange={handleCheckboxChange} /></div>}
-            {!showWelcome && <div><MbtaTrainMap /></div>}
+            {!showWelcome && (
+                <div>
+                    <nav>
+                        <ul>
+                            <li>
+                                <Link to="/news">Train News</Link>
+                            </li>
+                            <li>
+                                <Link to="/page2">Train Routes</Link>
+                            </li>
+                        </ul>
+                    </nav>
+                    <MbtaTrainMap />
+                </div>
+                )}
         </div>
     )
 }

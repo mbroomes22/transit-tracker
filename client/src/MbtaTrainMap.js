@@ -9,11 +9,11 @@ function MbtaTrainMap() {
   const handleImageLoad = () => {
     setIsLoaded(true);
   };
-
+  
   return (
     <div className="App">
       <header className="App-header">
-        {isLoaded ? 
+      {isLoaded ? 
         <div>
           <p>
             Here is the map
@@ -27,8 +27,8 @@ function MbtaTrainMap() {
         src={map} 
         className="App-logo" 
         alt="mbta logo" 
-        onLoad={handleImageLoad}
-        />
+        onLoad={handleImageLoad} />
+        {/* <LiveMap /> */}
       </header>
     </div>
   );
