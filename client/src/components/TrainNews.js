@@ -4,7 +4,7 @@ import axios from 'axios';
 
 function TrainNews() {
     const [apiData, setApiData] = useState(null);
-    const [selectedLine, setSelectedLine] = useState(null);
+    const [selectedLine, setSelectedLine] = useState('');
     const subway = [ "Red", "Orange", "Blue", "Green-B", "Green-C", "Green-D", "Green-E", "Mattapan" ];
     useEffect(() => {
         // Fetch data from the backend route
