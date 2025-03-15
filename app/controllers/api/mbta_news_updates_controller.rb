@@ -45,7 +45,7 @@ class Api::MbtaNewsUpdatesController < ApplicationController
       res = JSON.parse(response.body)
       alerts = {}
       if res["data"].empty?
-        alerts = { message: "No alerts found for this train line" }
+        alerts = { 0 => { summary: "No alerts found for this train line." } }
       else
         res["data"].each_with_index do |alert, idx|
           attributes = alert["attributes"]

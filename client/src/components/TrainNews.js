@@ -5,6 +5,7 @@ import axios from 'axios';
 function TrainNews() {
     const [apiData, setApiData] = useState(null);
     const [selectedLine, setSelectedLine] = useState('');
+    const [selectedMoreInfo, setSelectedMoreInfo] = useState(null);
     const subway = [ "Red", "Orange", "Blue", "Green-B", "Green-C", "Green-D", "Green-E", "Mattapan" ];
     useEffect(() => {
         // Fetch data from the backend route
@@ -23,6 +24,10 @@ function TrainNews() {
 
       const handleLineChange = (event) => {
         setSelectedLine(event.target.value);
+      }
+
+      const handleClick = (key) => {
+        setSelectedMoreInfo(selectedMoreInfo === key ? null : key);
       }
 
     return (
@@ -48,7 +53,20 @@ function TrainNews() {
                 </option>
                 ))}
             </select>
-            {apiData && <div>{JSON.stringify(apiData)}</div>}
+            {apiData && (
+                <div>
+                { Object.entries(apiData).map(([key, value]) => (
+                    <div key={key}>
+                        <h3>{value.date}</h3>
+                        <h4>{value.title}</h4>
+                        <p>{value.summary}</p>
+                        {value.description && <div onClick={() => handleClick(key)}>
+                            <p>More Info</p>
+                            {selectedMoreInfo === key && <p>{value.description}</p>}
+                        </div>}
+                    </div>
+                ))}
+                </div>)}
         </div>
     );
 }
