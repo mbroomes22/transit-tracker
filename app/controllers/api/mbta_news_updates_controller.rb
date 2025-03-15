@@ -1,12 +1,12 @@
 require "net/http"
 require "uri"
 
-class Api::MbtaScheduleController < ApplicationController
+class Api::MbtaNewsUpdatesController < ApplicationController
   def index
     uri = URI.parse("https://api-v3.mbta.com/v1/metadata")
     request = Net::HTTP::Get.new(uri)
-    # request["Accept"] = "application/json"
-    # request["Authorization"] = "Bearer #{ENV['MOBILITY_DATABASE_API_KEY']}"
+    request["Accept"] = "application/json"
+    request["Authorization"] = "Bearer #{ENV['MOBILITY_DATABASE_API_KEY']}"
 
     response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
       http.request(request)

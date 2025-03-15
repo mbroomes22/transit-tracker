@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 
 function TrainNews() {
@@ -7,7 +7,7 @@ function TrainNews() {
         // Fetch data from the backend route
         const fetchData = async () => {
           try {
-            const response = await axios.get('/api/mbta_schedule');
+            const response = await axios.get('/api/mbta_news_updates');
             setApiData(response.data);
           } catch (error) {
             console.error('Error fetching data:', error);
@@ -24,7 +24,7 @@ function TrainNews() {
                         <Link to="/">Train Map</Link>
                     </li>
                     <li>
-                        <Link to="/page2">Train Routes</Link>
+                        <Link to="/schedule">Train Schedule</Link>
                     </li>
                 </ul>
             </nav>

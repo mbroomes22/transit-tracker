@@ -1,7 +1,21 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 
-function TripRoutes() {
+function TripSchedule() {
+    const [apiData, setApiData] = useState(null);
+    useEffect(() => {
+        // Fetch data from the backend route
+        const fetchData = async () => {
+            try {
+            const response = await axios.get('/api/mbta_schedule');
+            setApiData(response.data);
+            } catch (error) {
+            console.error('Error fetching data:', error);
+            }
+        };
+    
+        fetchData();
+        }, []);
     return (
         <div>
             <nav>
@@ -14,10 +28,11 @@ function TripRoutes() {
                     </li>
                 </ul>
             </nav>
-            <h1>Trip Routes</h1>
-            <p>Welcome to Trip Routes!</p>
+            <h1>Trip Schedule</h1>
+            <p>Welcome to Trip Schedule!</p>
+            {apiData && <div>{JSON.stringify(apiData)}</div>}
         </div>
     );
 }
 
-export default TripRoutes;
+export default TripSchedule;

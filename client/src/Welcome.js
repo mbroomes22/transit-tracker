@@ -51,7 +51,7 @@ function Welcome() {
                                 <Link to="/news">Train News</Link>
                             </li>
                             <li>
-                                <Link to="/page2">Train Routes</Link>
+                                <Link to="/schedule">Train Schedule</Link>
                             </li>
                         </ul>
                     </nav>
