@@ -14,10 +14,11 @@ class Api::MbtaNewsUpdatesController < ApplicationController
       res = JSON.parse(response.body)
       alerts = {}
       res["data"].each_with_index do |alert, idx|
-        section_date = DateTime.parse(alert["attributes"]["created_at"]).strftime("%B %d, %Y")
-        section_summary = alert["attributes"]["header"]
-        section_title = alert["attributes"]["effect"].gsub("_", " ").capitalize
-        section_description = alert["attributes"]["description"]
+        attributes = alert["attributes"]
+        section_date = DateTime.parse(attributes["created_at"]).strftime("%B %d, %Y")
+        section_summary = attributes["header"]
+        section_title = attributes["effect"].gsub("_", " ").capitalize
+        section_description = attributes["description"]
         alerts[idx] = {
           date: section_date,
           summary: section_summary,
@@ -33,7 +34,6 @@ class Api::MbtaNewsUpdatesController < ApplicationController
 
   def show
     uri = URI.parse("https://api-v3.mbta.com/alerts?filter[route]=#{params[:train_line]}")
-    binding.pry
 
     request = Net::HTTP::Get.new(uri)
 
@@ -42,7 +42,22 @@ class Api::MbtaNewsUpdatesController < ApplicationController
     end
 
     if response.is_a?(Net::HTTPSuccess)
-      render json: JSON.parse(response.body)
+      res = JSON.parse(response.body)
+      alerts = {}
+      res["data"].each_with_index do |alert, idx|
+        attributes = alert["attributes"]
+        section_date = DateTime.parse(attributes["created_at"]).strftime("%B %d, %Y")
+        section_summary = attributes["header"]
+        section_title = attributes["effect"].gsub("_", " ").capitalize
+        section_description = attributes["description"]
+        alerts[idx] = {
+          date: section_date,
+          summary: section_summary,
+          title: section_title,
+          description: section_description
+        }
+      end
+      render json: alerts
     else
       render json: { error: "Failed to fetch data" }, status: :bad_request
     end
