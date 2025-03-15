@@ -44,18 +44,22 @@ class Api::MbtaNewsUpdatesController < ApplicationController
     if response.is_a?(Net::HTTPSuccess)
       res = JSON.parse(response.body)
       alerts = {}
-      res["data"].each_with_index do |alert, idx|
-        attributes = alert["attributes"]
-        section_date = DateTime.parse(attributes["created_at"]).strftime("%B %d, %Y")
-        section_summary = attributes["header"]
-        section_title = attributes["effect"].gsub("_", " ").capitalize
-        section_description = attributes["description"]
-        alerts[idx] = {
-          date: section_date,
-          summary: section_summary,
-          title: section_title,
-          description: section_description
-        }
+      if res["data"].empty?
+        alerts = { message: "No alerts found for this train line" }
+      else
+        res["data"].each_with_index do |alert, idx|
+          attributes = alert["attributes"]
+          section_date = DateTime.parse(attributes["created_at"]).strftime("%B %d, %Y")
+          section_summary = attributes["header"]
+          section_title = attributes["effect"].gsub("_", " ").capitalize
+          section_description = attributes["description"]
+          alerts[idx] = {
+            date: section_date,
+            summary: section_summary,
+            title: section_title,
+            description: section_description
+          }
+        end
       end
       render json: alerts
     else

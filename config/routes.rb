@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => "/cable"
+
   namespace :api do
     get "mbta_schedule", to: "mbta_schedule#index"
     get "mbta_news_updates", to: "mbta_news_updates#index"
