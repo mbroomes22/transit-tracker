@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     get "mbta_schedule", to: "mbta_schedule#index"
     get "mbta_news_updates", to: "mbta_news_updates#index"
+    get "mbta_news_updates/:train_line", to: "mbta_news_updates#show"
   end
   resources :trips
   resources :users
