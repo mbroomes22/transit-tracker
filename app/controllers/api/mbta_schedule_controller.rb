@@ -2,7 +2,6 @@ require "net/http"
 require "uri"
 
 class Api::MbtaScheduleController < ApplicationController
-  def index
     def index
       route = params[:filter][:route]
       uri = URI.parse("https://api-v3.mbta.com/schedules?include=stop,route&filter[route]=#{route}")
@@ -55,7 +54,6 @@ class Api::MbtaScheduleController < ApplicationController
         render json: { error: "Failed to fetch data" }, status: :bad_request
       end
     end
-  end
 end
 
 # Example response:
