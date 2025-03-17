@@ -4,12 +4,14 @@ import axios from 'axios';
 
 function TripSchedule() {
     const [apiData, setApiData] = useState(null);
+    const [selectedLine, setSelectedLine] = useState('Red')
     const [inboundRouteDist, setInboundRouteDist] = useState(0)
     const [outboundRouteDist, setOutboundRouteDist] = useState(0)
     const [inboundTrip, setInboundTrip] = useState([]);
     const [outboundTrip, setOutboundTrip] = useState([]);
     const [currentInboundTripIndex, setCurrentInboundTripIndex] = useState(0)
     const [currentOutboundTripIndex, setCurrentOutboundTripIndex] = useState(0)
+    const subway = [ "Orange", "Blue", "Green-B", "Green-C", "Green-D", "Green-E", "Mattapan" ];
 
     useEffect(() => {
         // Fetch data from the backend route
@@ -18,7 +20,7 @@ function TripSchedule() {
             const response = await axios.get('/api/mbta_schedule', {
                 params: {
                     filter: {
-                        route: 23
+                        route: {selectedLine}
                     }
                 }
             });
@@ -34,9 +36,13 @@ function TripSchedule() {
         fetchData();
         }, []);
 
+        const handleLineChange = (event) => {
+            setSelectedLine(event.target.value);
+        }
+
         const organizeSchedule = (schedule) => {
-            const inbound = schedule.filter((trip) => trip.train_direction === "Inbound")
-            const outbound = schedule.filter((trip) => trip.train_direction === "Outbound")
+            const inbound = schedule.filter((trip) => trip.train_direction === "Inbound") //  || "East" || "South"
+            const outbound = schedule.filter((trip) => trip.train_direction === "Outbound") //  || "West" || "North"
             setInboundTrip(inbound);
             setOutboundTrip(outbound);
         }
@@ -45,7 +51,7 @@ function TripSchedule() {
             const firstArrivalNull = schedule.find((trip) => trip.arrival_time === null && trip.train_direction === direction);
             const firstDepartureNull = schedule.find((trip) => trip.departure_time === null  && trip.train_direction === direction);
             const dist = (firstDepartureNull["stop_sequence_num"] + 1) - firstArrivalNull["stop_sequence_num"];
-            if (direction === "Inbound"){
+            if (direction === "Inbound"){ //  || "East" || "South"
                 setInboundRouteDist(dist);
             } else {
                 setOutboundRouteDist(dist);
@@ -83,7 +89,7 @@ function TripSchedule() {
             }
             return tripStops;
           };
-
+          
         const inboundTripStops = getTripStops(inboundTrip, currentInboundTripIndex, inboundRouteDist);
         const outboundTripStops = getTripStops(outboundTrip, currentOutboundTripIndex, outboundRouteDist);
     return (
@@ -100,12 +106,21 @@ function TripSchedule() {
             </nav>
             <h1>Trip Schedule</h1>
             <p>Welcome to Trip Schedule!</p>
+            <label htmlFor="subway-line">Select Subway Line: </label>
+            <select id="subway-line" value={selectedLine} onChange={handleLineChange}>
+                <option value="Red">Red</option>
+                {subway.map((line) => (
+                <option key={line} value={line}>
+                    {line}
+                </option>
+                ))}
+            </select>
             {apiData && (
                 <div>
                     <div>
                         <button onClick={handlePreviousInboundTrip} disabled={currentInboundTripIndex === 0}>Previous Trip</button>
                         <button onClick={handleNextInboundTrip} disabled={currentInboundTripIndex + inboundRouteDist >= inboundTrip.length}>Next Trip</button>
-                        <h3>Inbound</h3>
+                        <h3>{inboundTripStops[0].train_direction}</h3>                      
                         <h3>Heading to {inboundTripStops[0].train_destination}</h3>
                         {inboundTripStops.map((stop, idx) => (
                             <div key={idx}>
@@ -118,7 +133,7 @@ function TripSchedule() {
                     <div>
                     <button onClick={handlePreviousOutboundTrip} disabled={currentOutboundTripIndex === 0}>Previous Trip</button>
                     <button onClick={handleNextOutboundTrip} disabled={currentOutboundTripIndex + outboundRouteDist >= outboundTrip.length}>Next Trip</button>
-                        <h3>Outbound</h3>
+                        <h3>{outboundTripStops[0].train_direction}</h3>
                         <h3>Heading to {outboundTripStops[0].train_destination}</h3>
                         {outboundTripStops.map((stop, idx) => (
                             <div key={idx}>
