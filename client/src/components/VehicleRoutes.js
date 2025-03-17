@@ -12,6 +12,8 @@ function TripSchedule() {
     const [currentInboundTripIndex, setCurrentInboundTripIndex] = useState(0)
     const [currentOutboundTripIndex, setCurrentOutboundTripIndex] = useState(0)
     const subway = [ "Orange", "Blue", "Green-B", "Green-C", "Green-D", "Green-E", "Mattapan" ];
+    const inboundDirections = ["Inbound", "East", "South"];
+    const outboundDirections = ["Outbound", "West", "North"];
 
     useEffect(() => {
         // Fetch data from the backend route
@@ -41,8 +43,8 @@ function TripSchedule() {
         }
 
         const organizeSchedule = (schedule) => {
-            const inbound = schedule.filter((trip) => trip.train_direction === "Inbound") //  || "East" || "South"
-            const outbound = schedule.filter((trip) => trip.train_direction === "Outbound") //  || "West" || "North"
+            const inbound = schedule.filter((trip) => inboundDirections.includes(trip.train_direction))
+            const outbound = schedule.filter((trip) => outboundDirections.includes(trip.train_direction))
             setInboundTrip(inbound);
             setOutboundTrip(outbound);
         }
@@ -51,7 +53,7 @@ function TripSchedule() {
             const firstArrivalNull = schedule.find((trip) => trip.arrival_time === null && trip.train_direction === direction);
             const firstDepartureNull = schedule.find((trip) => trip.departure_time === null  && trip.train_direction === direction);
             const dist = (firstDepartureNull["stop_sequence_num"] + 1) - firstArrivalNull["stop_sequence_num"];
-            if (direction === "Inbound"){ //  || "East" || "South"
+            if (inboundDirections.includes(direction)){
                 setInboundRouteDist(dist);
             } else {
                 setOutboundRouteDist(dist);
@@ -89,7 +91,7 @@ function TripSchedule() {
             }
             return tripStops;
           };
-          
+
         const inboundTripStops = getTripStops(inboundTrip, currentInboundTripIndex, inboundRouteDist);
         const outboundTripStops = getTripStops(outboundTrip, currentOutboundTripIndex, outboundRouteDist);
     return (
