@@ -4,14 +4,14 @@ import axios from 'axios';
 
 function TripSchedule() {
     const [apiData, setApiData] = useState(null);
-    const [selectedLine, setSelectedLine] = useState('Red')
+    const [selectedLine, setSelectedLine] = useState('Mattapan')
     const [inboundRouteDist, setInboundRouteDist] = useState(0)
     const [outboundRouteDist, setOutboundRouteDist] = useState(0)
     const [inboundTrip, setInboundTrip] = useState([]);
     const [outboundTrip, setOutboundTrip] = useState([]);
     const [currentInboundTripIndex, setCurrentInboundTripIndex] = useState(0)
     const [currentOutboundTripIndex, setCurrentOutboundTripIndex] = useState(0)
-    const subway = [ "Orange", "Blue", "Green-B", "Green-C", "Green-D", "Green-E", "Mattapan" ];
+    const subway = [ "Red", "Orange", "Blue", "Green-B", "Green-C", "Green-D", "Green-E", "Mattapan" ];
     const inboundDirections = ["Inbound", "East", "South"];
     const outboundDirections = ["Outbound", "West", "North"];
 
@@ -28,8 +28,8 @@ function TripSchedule() {
             });
             setApiData(response.data);
             organizeSchedule(response.data);
-            routeDistance(response.data, "Inbound");
-            routeDistance(response.data, "Outbound");
+            routeDistance(response.data, "Inbound"); // include "East", "South"
+            routeDistance(response.data, "Outbound"); // include "West", "North"
             } catch (error) {
             console.error('Error fetching data:', error);
             }
@@ -50,8 +50,8 @@ function TripSchedule() {
         }
 
         const routeDistance = (schedule, direction) => {
-            const firstArrivalNull = schedule.find((trip) => trip.arrival_time === null && trip.train_direction === direction);
-            const firstDepartureNull = schedule.find((trip) => trip.departure_time === null  && trip.train_direction === direction);
+            const firstArrivalNull = schedule.find((trip) => trip.arrival_time === null && trip.train_direction === direction); // change here too
+            const firstDepartureNull = schedule.find((trip) => trip.departure_time === null  && trip.train_direction === direction); // change here too
             const dist = (firstDepartureNull["stop_sequence_num"] + 1) - firstArrivalNull["stop_sequence_num"];
             if (inboundDirections.includes(direction)){
                 setInboundRouteDist(dist);
@@ -110,7 +110,7 @@ function TripSchedule() {
             <p>Welcome to Trip Schedule!</p>
             <label htmlFor="subway-line">Select Subway Line: </label>
             <select id="subway-line" value={selectedLine} onChange={handleLineChange}>
-                <option value="Red">Red</option>
+                <option value="Mattapan">Mattapan</option>
                 {subway.map((line) => (
                 <option key={line} value={line}>
                     {line}
