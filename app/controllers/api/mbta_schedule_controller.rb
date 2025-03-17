@@ -3,7 +3,7 @@ require "uri"
 
 class Api::MbtaScheduleController < ApplicationController
     def index
-      route = params[:filter][:route]
+      route = params[:filter][:route][:selectedLine]
       uri = URI.parse("https://api-v3.mbta.com/schedules?include=stop,route&filter[route]=#{route}")
       request = Net::HTTP::Get.new(uri)
 
