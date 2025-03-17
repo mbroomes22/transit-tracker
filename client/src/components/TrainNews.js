@@ -6,29 +6,50 @@ function TrainNews() {
     const [apiData, setApiData] = useState(null);
     const [selectedLine, setSelectedLine] = useState('');
     const [selectedMoreInfo, setSelectedMoreInfo] = useState(null);
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(10);
+    const [totalItems, setTotalItems] = useState(0);
     const subway = [ "Red", "Orange", "Blue", "Green-B", "Green-C", "Green-D", "Green-E", "Mattapan" ];
     useEffect(() => {
         // Fetch data from the backend route
         const fetchData = async () => {
           try {
-            const url = selectedLine ? `/api/mbta_news_updates/${selectedLine}` : '/api/mbta_news_updates';
+            const url = selectedLine ? `/api/mbta_news_updates/${selectedLine}?page=${page}&per_page=${perPage}` 
+            : `/api/mbta_news_updates?page=${page}&per_page=${perPage}`;
             const response = await axios.get(url);
             setApiData(response.data);
+            setTotalItems(response.data.total_items);
           } catch (error) {
             console.error('Error fetching data:', error);
           }
         };
     
         fetchData();
-      }, [selectedLine]);
+      }, [selectedLine, page, perPage]);
 
       const handleLineChange = (event) => {
         setSelectedLine(event.target.value);
+        setPage(1)
+      }
+
+      const handlePerPageChange = (event) => {
+        setPerPage(parseInt(event.target.value, 10));
+        setPage(1);
       }
 
       const handleClick = (key) => {
         setSelectedMoreInfo(selectedMoreInfo === key ? null : key);
       }
+
+      const handleNextPage = () => {
+        setPage((prevPage) => prevPage + 1);
+      }
+
+      const handlePreviousPage = () => {
+        setPage((prevPage) => Math.max(prevPage - 1, 1));
+      }
+
+      const totalPages = Math.ceil(totalItems / perPage);
 
     return (
         <div>
@@ -53,19 +74,36 @@ function TrainNews() {
                 </option>
                 ))}
             </select>
+            <label htmlFor="per-page">Items per Page:</label>
+            <select id="per-page" value={perPage} onChange={handlePerPageChange}>
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+            </select>
             {apiData && (
                 <div>
-                { Object.entries(apiData).map(([key, value]) => (
+                { Object.entries(apiData.alerts).map(([key, value]) => (
                     <div key={key}>
                         <h3>{value.date}</h3>
                         <h4>{value.title}</h4>
                         <p>{value.summary}</p>
-                        {value.description && <div onClick={() => handleClick(key)}>
-                            <p>More Info</p>
-                            {selectedMoreInfo === key && <p>{value.description}</p>}
-                        </div>}
+                        {value.description && (
+                            <div onClick={() => handleClick(key)}>
+                                <p>More Info</p>
+                                {selectedMoreInfo === key && <p>{value.description}</p>}
+                            </div>
+                        )}
                     </div>
                 ))}
+                <p>page {page} of {totalPages}</p>
+                    <div>
+                        <button onClick={handlePreviousPage} disabled={page === 1}>
+                            Previous Page
+                        </button>
+                        <button onClick={handleNextPage} disabled={page >= totalPages}>
+                            Next Page
+                        </button>
+                    </div>
                 </div>)}
         </div>
     );
