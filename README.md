@@ -24,3 +24,7 @@ Frontend uses React based Map Visualizations detailed here:[https://react-spatia
 
 App is hosted on Google Firebase
 
+* uncomment these files to get firebase working again: 
+client/src/firebaseConfig.js
+node_modules/@firebase/app/dist/esm/app/src/firebaseApp.d.ts
+
