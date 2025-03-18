@@ -41,6 +41,15 @@
   width: 50%;
 }
 
+.map-container {
+  width: 1000px;
+  height: 1000px; /* Full viewport height */
+}
+
+.basic-map {
+  height: 100%; /* Full height of the container */
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

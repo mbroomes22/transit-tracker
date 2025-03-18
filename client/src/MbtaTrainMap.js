@@ -1,10 +1,15 @@
 import React, {useState} from 'react';
 import map from './subway-map.jpg';
 import './stylesheets/App.css';
-// import LiveMap from './LiveMap.js';
+import LiveMap from './LiveMap.js';
 
 function MbtaTrainMap() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showLiveMap, setShowLiveMap] = useState(false);
+
+  const toggleMap = () => {
+    setShowLiveMap((prevShowLiveMap) => !prevShowLiveMap);
+  }
 
   const handleImageLoad = () => {
     setIsLoaded(true);
@@ -13,22 +18,31 @@ function MbtaTrainMap() {
   return (
     <div className="App">
       <header className="App-header">
-      {isLoaded ? 
-        <div>
-          <p>
-            Here is the map
-          </p>
-        </div>
-         : 
+        <button onClick={toggleMap}>
+          {showLiveMap ? 'Show Static Map' : 'Show Live Map'}
+        </button>
+        {showLiveMap ? (<LiveMap />) : (
+          <>
+        {isLoaded ? (
+          <div>
+            <p>
+              Here is the map
+            </p>
+          </div>
+          ) : (
          <div className='placeholder'>
           Loading Map...
-          </div>}
+          </div>
+        )}
          <img 
         src={map} 
         className="App-logo" 
         alt="mbta logo" 
-        onLoad={handleImageLoad} />
-        {/* <LiveMap /> */}
+        onLoad={handleImageLoad} 
+        />
+        </>
+        )
+      }
       </header>
     </div>
   );
