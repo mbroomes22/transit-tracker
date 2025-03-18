@@ -17,6 +17,8 @@
     "maplibre-gl": "^5.2.0",
     "mobility-toolbox-js": "^3.2.3",
     "ol": "^10.4.0",
+    "ol-mapbox-style": "^12.5.0",
+    "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.3.0",

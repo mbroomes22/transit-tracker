@@ -7201,6 +7201,11 @@ mapbox-gl@^3.10.0:
     tinyqueue "^3.0.0"
     vt-pbf "^3.1.3"
 
+mapbox-to-css-font@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/mapbox-to-css-font/-/mapbox-to-css-font-3.0.2.tgz#ac340f614e23dfba4901f7ba3e4da058c210eb64"
+  integrity sha512-o1vqooDELinvNkLBIdrBVUtuxwhNeYPOp/7LRrSxPYzmZ9aTYEuObrFoQzH6Gn3nv7t1nkyIbj5FcbX41FbSyg==
+
 maplibre-gl@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/maplibre-gl/-/maplibre-gl-5.2.0.tgz#e3cdb66c82232cffbe149b032776484722caee4e"
@@ -7601,6 +7606,14 @@ obuf@^1.0.0, obuf@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
+
+ol-mapbox-style@^12.5.0:
+  version "12.5.0"
+  resolved "https://registry.yarnpkg.com/ol-mapbox-style/-/ol-mapbox-style-12.5.0.tgz#49bc833c420af4c936de4be4a6c694f4f9973773"
+  integrity sha512-Wr06OhV+tHlNZzol4C3bbKwcyHjNTb+ThMa3ALRRIMKosZ8z8m6A4KyX19zfNq9TI70LugEtMa5FVR7l7BlQVw==
+  dependencies:
+    "@maplibre/maplibre-gl-style-spec" "^23.1.0"
+    mapbox-to-css-font "^3.0.2"
 
 ol@^10.4.0:
   version "10.4.0"

@@ -1,0 +1,36 @@
+@use "./stylesheets/variables.scss";
+
+.rt-route-schedule-example {
+  font-family: variables.$font-family;
+  position: relative;
+  display: flex;
+
+  .rt-route-schedule {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    width: 50%;
+
+    .rt-route-header {
+      padding-top: 0;
+    }
+
+    .rt-route-footer {
+      padding-bottom: 0;
+    }
+
+    .rt-route-header,
+    .rt-route-footer {
+      flex: 0 0 auto; /* 'auto' is for IE11 */
+    }
+
+    .rt-route-body {
+      overflow-y: auto;
+      flex: 2;
+    }
+  }
+
+  .rs-map {
+    flex: 1;
+  }
+}

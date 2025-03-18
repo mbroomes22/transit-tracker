@@ -1,0 +1,60 @@
+/**
+* This file defines variables.
+*/
+@use "sass:color";
+@use "sass:math";
+
+/*  Color */
+$brand-primary: #eb0000;
+$brand-secondary: #003d85;
+$gray-base: #000;
+$gray-lighter: color.adjust($gray-base, $lightness: 93.5%);
+$gray-light: color.adjust($gray-base, $lightness: 46.7%);
+$gray: color.adjust($gray-base,$lightness: 33.5%);
+$gray-dark: color.adjust($gray-base, $lightness: 20%);
+$gray-darker: color.adjust($gray-base, $lightness: 13.5%);
+
+/* Text */
+$font-family: arial, sans-serif;
+$font-family-bold: arial, sans-serif;
+$font-size-base: 15px;
+$font-size-small: math.ceil($font-size-base * 0.85);
+$font-size-large: math.ceil($font-size-base * 1.25);
+
+/* Shadow */
+$box-shadow: 0 1px 4px rgb(0 0 0 / 20%);
+
+/* Padding */
+$padding-base: 5px;
+$padding-base-vertical: 5px;
+$padding-base-horizontal: 5px;
+
+/* Link */
+$link-color: $brand-primary;
+$link-color-hover: color.adjust($brand-primary,$lightness: -10%);
+$link-color-active: color.adjust($brand-primary, $lightness: -5%);
+$link-decoration: none;
+$link-decoration-hover: underline;
+
+/* Buttons */
+$btn-primary-color: $brand-primary;
+$btn-primary-color-hover: color.adjust($brand-primary, $lightness: -10%);
+$btn-primary-color-active: color.adjust($brand-primary, $lightness: -5%);
+$btn-secondary-color: $brand-secondary;
+$btn-secondary-color-hover: color.adjust($btn-secondary-color, $lightness: -10%);
+$btn-secondary-color-active: color.adjust($btn-secondary-color, $lightness: -5%);
+$btn-size-base: 50px;
+$btn-size-small: math.ceil($btn-size-base * 0.85);
+$btn-size-large: math.ceil($btn-size-base * 1.25);
+
+/* Z-index */
+$zindex-base: 0;
+$zindex-lower: 200;
+$zindex-low: 400;
+$zindex-high: 600;
+$zindex-higher: 800;
+
+/*  Others */
+$header-height: 55px;
+$footer-height: 25px;
+$sidebar-open-width: 200px;
