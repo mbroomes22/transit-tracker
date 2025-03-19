@@ -3,7 +3,8 @@
 }
 
 .App-logo {
-  height: 70vmin;
+  width: 70%;
+  height: auto;
   pointer-events: none;
   border: solid #5b6dcd 10px;
   border-radius: 50px;
@@ -19,8 +20,10 @@
 } */
 
 .App-header {
+  position: relative;
+  z-index: 1;
   background-color: #e8ebdd;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,12 +45,38 @@
 }
 
 .map-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 1000px;
-  height: 1000px; /* Full viewport height */
+  height: 1000px;
+  z-index: 10;
+
+  /* position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  top: auto;
+  right: 10px;
+  left: auto;
+  bottom: 20vh;
+  width: 75vw;
+  height: 75vh;
+  z-index: 10; */
+
 }
 
 .basic-map {
-  height: 100%; /* Full height of the container */
+  width: 100px;
+  height: 100px; 
+  /* margin: 10px; */
 }
 
 @keyframes App-logo-spin {
@@ -57,4 +86,38 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.static-map-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.map-nav {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+
+.map-nav button {
+  margin-bottom: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.map-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder {
+  margin-bottom: 10px;
+}
+
+.switch-map {
+  margin-bottom: 10px;
+  padding: 10px;
+  cursor: pointer;
 }
