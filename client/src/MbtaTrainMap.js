@@ -26,7 +26,7 @@ function MbtaTrainMap() {
         {isLoaded ? (
           <div>
             <p>
-              Here is the map
+              MBTA map
             </p>
           </div>
           ) : (

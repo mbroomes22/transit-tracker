@@ -16,8 +16,9 @@ class Api::MbtaNewsUpdatesController < ApplicationController
 
     if response.is_a?(Net::HTTPSuccess)
       res = JSON.parse(response.body)
-      total_items = res["data"].size
-      paginated_data = res["data"].slice(offset, per_page)
+      sorted_data = res["data"].sort_by { |alert| DateTime.parse(alert["attributes"]["created_at"]) }.reverse
+      total_items = sorted_data.size
+      paginated_data = sorted_data.slice(offset, per_page)
 
       alerts = {}
       paginated_data.each_with_index do |alert, idx|
