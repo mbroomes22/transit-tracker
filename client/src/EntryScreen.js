@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './mbta.png';
+import logo from './maps/mbta.png';
 import './stylesheets/App.css';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
