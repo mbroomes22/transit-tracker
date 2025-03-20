@@ -39,7 +39,7 @@ const LiveMap = () => {
         target: 'map',
         view: new View({
           center: [-7910000, 5210000],
-          zoom: 4,
+          zoom: 12,
         }),
         layers: layers,
         controls: [],
