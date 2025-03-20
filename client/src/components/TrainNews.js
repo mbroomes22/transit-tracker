@@ -85,7 +85,7 @@ function TrainNews() {
             {apiData && (
                 <div>
                 { Object.entries(apiData.alerts).map(([key, value]) => (
-                    <div key={key}>
+                    <div className="news-update" key={key}>
                         <h3>{value.date}</h3>
                         <h4>{value.title}</h4>
                         <p>{value.summary}</p>

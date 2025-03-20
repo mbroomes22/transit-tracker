@@ -35,11 +35,11 @@ function MbtaTrainMap() {
           <>
           <div className="static-map-container">
             <nav className = "map-nav">
-              <button onClick={() => handleMapSelection(basic_mbta_map)}>Map 1</button>
-              <button onClick={() => handleMapSelection(mbta_downtown_map)}>Map 2</button>
-              <button onClick={() => handleMapSelection(bus_route_map)}>Map 3</button>
-              <button onClick={() => handleMapSelection(ne_regional_transport_map)}>Map 4</button>
-              <button onClick={() => handleMapSelection(rapid_transit_map)}>Map 5</button>
+              <button onClick={() => handleMapSelection(basic_mbta_map)}>MBTA map</button>
+              <button onClick={() => handleMapSelection(mbta_downtown_map)}>MBTA Downtown map</button>
+              <button onClick={() => handleMapSelection(bus_route_map)}>Bus Route map</button>
+              <button onClick={() => handleMapSelection(ne_regional_transport_map)}>NE Regional Transport map</button>
+              <button onClick={() => handleMapSelection(rapid_transit_map)}>Rapid Transit map</button>
             </nav>
             <div className="map-content">
               {isLoaded ? (
