@@ -3,6 +3,7 @@
 }
 
 body {
+  font-family: 'Manrope', sans-serif;
   padding:10%;
   /* background-image: url(../stock-photos/bus-stock-photo.avif); */
   background-size: cover;
@@ -53,6 +54,16 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column; */
+}
+
+.more-info {
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+}
+
+.more-info:hover {
+  color: rgb(75, 59, 59);
 }
 
 .App-link {
@@ -173,7 +184,7 @@ body {
   align-items: center;
 }
 
-.target :hover {
+.target:hover {
   cursor: pointer;
   background-color: rgb(212, 203, 203);
   box-shadow: -.4em 0 .4em rgb(212, 203, 203);

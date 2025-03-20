@@ -91,7 +91,7 @@ function TrainNews() {
                         <p>{value.summary}</p>
                         {value.description && (
                             <div onClick={() => handleClick(key)}>
-                                <p>More Info</p>
+                                <p className='more-info'>More Info...</p>
                                 {selectedMoreInfo === key && <p>{value.description}</p>}
                             </div>
                         )}
