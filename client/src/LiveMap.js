@@ -55,11 +55,17 @@ const LiveMap = () => {
           setOpen(true);
         mapRef.current.forEachFeatureAtPixel(event.pixel, (feature) => {
           const vehicleInfo = feature.getProperties(); 
+          console.log("feature:", feature)
           setCurrentTrain(vehicleInfo['line']['name']) 
           setTrainLineColor(vehicleInfo['line']['color'])
           // const coordinates = feature.getGeometry().getCoordinates();
         });
       });
+      mapRef.current.on('pointermove', (event) => {
+        const hit = mapRef.current.hasFeatureAtPixel(event.pixel);
+        mapRef.current.getTargetElement().style.cursor = hit ? 'pointer' : '';
+      })
+
       setMapInitialized(true);
     }
   }, []);
