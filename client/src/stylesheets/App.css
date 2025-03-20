@@ -2,6 +2,16 @@
   text-align: center;
 }
 
+body {
+  padding:10%;
+  /* background-image: url(../stock-photos/bus-stock-photo.avif); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgb(226, 219, 219);
+  color: #bd290b
+}
+
 .App-logo {
   width: 70%;
   height: auto;
@@ -22,7 +32,7 @@
 .App-header {
   position: relative;
   z-index: 1;
-  background-color: #e8ebdd;
+  background-color: #e8ebdd49;
   /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
@@ -30,6 +40,19 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: rgb(11, 1, 1);
+}
+
+.intro-block {
+  border: solid #5b6dcd 10px;
+  background-color: whitesmoke;
+  margin: 5vh auto;
+  padding: 1vh;
+  max-width: 800px;
+  width: 90%;
+  /* display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; */
 }
 
 .App-link {
@@ -120,4 +143,24 @@
   margin-bottom: 10px;
   padding: 10px;
   cursor: pointer;
+}
+
+.stop {
+  border: solid #5b6dcd 1px;
+  background-color: whitesmoke;
+  padding: 1vw;
+}
+
+.route {
+  border: solid #5b6dcd 1px;
+  background-color: whitesmoke;
+  padding: 3%;
+  border: 1%;
+}
+
+.route-schedules {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
 }

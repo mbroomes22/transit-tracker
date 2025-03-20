@@ -63,6 +63,7 @@ function TrainNews() {
                     </li>
                 </ul>
             </nav>
+            <div className="intro-block">
             <h1>Train News</h1>
             <p>Welcome to Train News!</p>
             <label htmlFor="subway-line">Select Subway Line: </label>
@@ -80,6 +81,7 @@ function TrainNews() {
                 <option value={10}>10</option>
                 <option value={20}>20</option>
             </select>
+            </div>
             {apiData && (
                 <div>
                 { Object.entries(apiData.alerts).map(([key, value]) => (
@@ -95,6 +97,7 @@ function TrainNews() {
                         )}
                     </div>
                 ))}
+                <div className="intro-block">
                 <p>page {page} of {totalPages}</p>
                     <div>
                         <button onClick={handlePreviousPage} disabled={page === 1}>
@@ -103,6 +106,7 @@ function TrainNews() {
                         <button onClick={handleNextPage} disabled={page >= totalPages}>
                             Next Page
                         </button>
+                    </div>
                     </div>
                 </div>)}
         </div>

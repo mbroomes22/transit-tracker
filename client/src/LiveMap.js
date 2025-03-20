@@ -50,6 +50,8 @@ const LiveMap = () => {
   return (
   <ThemeProvider theme={geopsTheme}>
     <div className="map-container" id="map">
+    {mapRef.current && (
+          <>
     <BasicMap map={mapRef.current} tabIndex={0} className="basic-map" />
     <Geolocation map={mapRef.current} />
     <FitExtent map={mapRef.current} extent={extent}>
@@ -64,6 +66,8 @@ const LiveMap = () => {
             <Button onClick={() => setLineInfos(null)}>Clear</Button>
           )}
         />
+        </>
+    )}
     </div>
   </ThemeProvider>
 );
