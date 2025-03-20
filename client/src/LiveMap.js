@@ -94,7 +94,7 @@ const LiveMap = () => {
               x
             </button>
             <div className='menu-collapsible-vertical'>
-              <p style={{ backgroundColor:`${trainLineColor}`, color: 'white', borderRadius: '10px', border: '1px solid black'}}>Train Line: {currentTrain}</p>
+              <p className='rte-header' style={{ backgroundColor:`${trainLineColor}`}}>Train Line: {currentTrain}</p>
               {/* <p>Vehicle ID:</p>
               <p>Current Stop:</p> */}
             </div>
