@@ -45,6 +45,7 @@ class Api::MbtaScheduleController < ApplicationController
             single_rte_stop_data["train_direction"] = route["direction_names"][schedule["attributes"]["direction_id"]]
             single_rte_stop_data["train_destination"] = route["direction_destinations"][schedule["attributes"]["direction_id"]]
             single_rte_stop_data["stop_sequence_num"] = schedule["attributes"]["stop_sequence"]
+            single_rte_stop_data["stop_id"] = idx
             single_rte_stop_data["current_stop_name"] = stop[schedule["relationships"]["stop"]["data"]["id"]]
             schedule_data << single_rte_stop_data
           end

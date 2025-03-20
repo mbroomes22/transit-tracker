@@ -23,10 +23,10 @@ function TripSchedule() {
     }, [inboundDirections, outboundDirections])
 
     const routeDistance = useCallback((schedule, direction) => {
-        const firstArrivalNull = schedule.find((trip) => trip.arrival_time === null && trip.train_direction === direction); // change here too
-        const firstDepartureNull = schedule.find((trip) => trip.departure_time === null  && trip.train_direction === direction); // change here too
-        const dist = (firstDepartureNull["stop_sequence_num"] + 1) - firstArrivalNull["stop_sequence_num"];
-        if (inboundDirections.includes(direction)){
+        const firstArrivalNull = schedule.find((trip) => trip.arrival_time === null && direction.includes(trip.train_direction)); // change here too
+        const firstDepartureNull = schedule.find((trip) => trip.departure_time === null  && direction.includes(trip.train_direction)); // change here too
+        const dist = (firstDepartureNull["stop_id"] + 1) - firstArrivalNull["stop_id"];
+        if (inboundDirections === direction){
             setInboundRouteDist(dist);
         } else {
             setOutboundRouteDist(dist);
@@ -46,8 +46,8 @@ function TripSchedule() {
             });
             setApiData(response.data);
             organizeSchedule(response.data);
-            routeDistance(response.data, "Inbound"); // include "East", "South"
-            routeDistance(response.data, "Outbound"); // include "West", "North"
+            routeDistance(response.data, inboundDirections); // include "East", "South"
+            routeDistance(response.data, outboundDirections); // include "West", "North"
             } catch (error) {
             console.error('Error fetching data:', error);
             }
@@ -80,9 +80,9 @@ function TripSchedule() {
 
         const getTripStops = (tripArray, tripIndex, routeDistance) => {
             const tripStops = [];
-            let currentStopSequence = tripArray[tripIndex]?.stop_sequence_num;
+            let currentStopSequence = tripArray[tripIndex]?.stop_id;
             for (let i = tripIndex; i < tripIndex + routeDistance; i++) {
-              if (tripArray[i].stop_sequence_num === currentStopSequence) {
+              if (tripArray[i].stop_id === currentStopSequence) {
                 tripStops.push(tripArray[i]);
                 currentStopSequence++;
               } else {
@@ -92,8 +92,8 @@ function TripSchedule() {
             return tripStops;
           };
 
-        const inboundTripStops = getTripStops(inboundTrip, currentInboundTripIndex, inboundRouteDist);
-        const outboundTripStops = getTripStops(outboundTrip, currentOutboundTripIndex, outboundRouteDist);
+        const inboundTripStops = getTripStops(inboundTrip, currentInboundTripIndex, inboundRouteDist).sort((a, b) => a.stop_id - b.stop_id);;
+        const outboundTripStops = getTripStops(outboundTrip, currentOutboundTripIndex, outboundRouteDist).sort((a, b) => a.stop_id - b.stop_id);;
     return (
         <div>
             <nav>
@@ -128,7 +128,7 @@ function TripSchedule() {
                         <h3>Heading to {inboundTripStops[0].train_destination}</h3>
                         {inboundTripStops.map((stop, idx) => (
                             <div className="stop" key={idx}>
-                                <p>Stop # {stop.stop_sequence_num}: {stop.current_stop_name}</p>
+                                <p>Stop # {(stop.stop_id % inboundRouteDist) + 1}: {stop.current_stop_name}</p>
                                 <p>Arrival Time: {stop.arrival_time || "First Stop"}</p>
                                 <p>Departure Time: {stop.departure_time || "Last Stop"}</p>
                             </div>
@@ -141,7 +141,7 @@ function TripSchedule() {
                         <h3>Heading to {outboundTripStops[0].train_destination}</h3>
                         {outboundTripStops.map((stop, idx) => (
                             <div className="stop" key={idx}>
-                                <p>Stop # {stop.stop_sequence_num}: {stop.current_stop_name}</p>
+                                <p>Stop # {(stop.stop_id % outboundRouteDist) + 1}: {stop.current_stop_name}</p>
                                 <p>Arrival Time: {stop.arrival_time || "First Stop"}</p>
                                 <p>Departure Time: {stop.departure_time || "Last Stop"}</p>
                             </div>
