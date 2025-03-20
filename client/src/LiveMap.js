@@ -4,8 +4,9 @@ import { RealtimeLayer as TrackerLayer } from 'mobility-toolbox-js/ol';
 import OSM from 'ol/source/OSM';
 import Map from 'ol/Map';
 import View from 'ol/View';
+import Overlay from 'react-spatial/components/Overlay';
 import { geopsTheme } from '@geops/geops-ui';
-import { ThemeProvider } from '@mui/material';
+import { responsiveFontSizes, ThemeProvider } from '@mui/material';
 import Button from '@mui/material/Button';
 import FitExtent from 'react-spatial/components/FitExtent';
 import BasicMap from 'react-spatial/components/BasicMap';
@@ -32,7 +33,11 @@ const layers = [
 const LiveMap = () => {
   const [lineInfos, setLineInfos] = useState(null);
   const [mapInitialized, setMapInitialized] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [currentTrain, setCurrentTrain] = useState(null);
+  const [trainLineColor, setTrainLineColor] = useState('black');
   const mapRef = useRef(null);
+  const popupRef = useRef(null);
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -45,6 +50,16 @@ const LiveMap = () => {
         layers: layers,
         controls: [],
       });
+
+      mapRef.current.on('click', (event) => {
+          setOpen(true);
+        mapRef.current.forEachFeatureAtPixel(event.pixel, (feature) => {
+          const vehicleInfo = feature.getProperties(); 
+          setCurrentTrain(vehicleInfo['line']['name']) 
+          setTrainLineColor(vehicleInfo['line']['color'])
+          // const coordinates = feature.getGeometry().getCoordinates();
+        });
+      });
       setMapInitialized(true);
     }
   }, []);
@@ -55,6 +70,36 @@ const LiveMap = () => {
     {mapInitialized && (
           <>
     <BasicMap map={mapRef.current} tabIndex={0} className="basic-map" />
+    {open && (
+        <Overlay
+          observe={mapRef.current}
+          className="ol-menu-wrapper"
+          mobileSize={{
+              minimalHeight: '25%',
+              maximalHeight: '80%',
+              defaultSize: {
+                height: '40%',
+                width: '100%',
+              },
+            }}
+        >
+          <div>
+            <button
+              id="popup-closer" 
+              className="menu-wrapper-closer"
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              x
+            </button>
+            <div className='menu-collapsible-vertical'>
+              <p style={{ backgroundColor:`${trainLineColor}`, color: 'white', borderRadius: '10px', border: '1px solid black'}}>Train Line: {currentTrain}</p>
+              {/* <p>Vehicle ID:</p>
+              <p>Current Stop:</p> */}
+            </div>
+          </div>
+        </Overlay>)}
     <div className='geolocate'>
     <Geolocation map={mapRef.current} className="target" />
       <p>Find Me</p>

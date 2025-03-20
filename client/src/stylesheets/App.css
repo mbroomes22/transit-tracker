@@ -195,3 +195,36 @@ body {
   height: 80vh; 
   /* margin: 10px; */
 }
+
+.ol-menu-wrapper {
+  background-color: white;
+  padding: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin:1px;
+  position: absolute;
+  top: 70px;
+  width: 300px;
+  box-shadow: 0 10px 15px rgba(53, 53, 53, .125);
+  left: 0;
+  z-index: 500;
+}
+
+.menu-wrapper-closer {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.menu-collapsible-vertical {
+  overflow: hidden auto;
+  transition: max-height .3s ease;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
