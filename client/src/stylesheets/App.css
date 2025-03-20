@@ -96,11 +96,6 @@ body {
 
 }
 
-.basic-map {
-  width: 100px;
-  height: 100px; 
-  /* margin: 10px; */
-}
 
 @keyframes App-logo-spin {
   from {
@@ -170,4 +165,22 @@ body {
   background-color: whitesmoke;
   padding: 1vw;
   margin: 2vh;
+}
+
+.geolocate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.target :hover {
+  cursor: pointer;
+  background-color: rgb(212, 203, 203);
+  box-shadow: -.4em 0 .4em rgb(212, 203, 203);
+}
+
+.basic-map {
+  width: 80vw;
+  height: 80vh; 
+  /* margin: 10px; */
 }

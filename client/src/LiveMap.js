@@ -13,9 +13,9 @@ import Geolocation from 'react-spatial/components/Geolocation';
 import RouteSchedule from 'react-spatial/components/RouteSchedule';
 import 'ol/ol.css';
 
-// const extent = [-13884991, 2870341, -7455066, 6338219]; for USA
 // const extent = [-8100000, 4950000, -7900000, 5300000] // for MA
-const extent = [-7930000, 5190000, -7890000, 5230000] // for Boston, MA
+// const extent = [-7930000, 5190000, -7890000, 5230000] // for Boston, MA
+const extent = [-7930000, 5195000, -7895000, 5228000]; // Approximate extent for downtown Boston, MA
 
 const trackerLayer = new TrackerLayer({
   url: 'wss://api.geops.io/tracker-ws/v1/ws',
@@ -31,6 +31,7 @@ const layers = [
 
 const LiveMap = () => {
   const [lineInfos, setLineInfos] = useState(null);
+  const [mapInitialized, setMapInitialized] = useState(false);
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -44,16 +45,20 @@ const LiveMap = () => {
         layers: layers,
         controls: [],
       });
+      setMapInitialized(true);
     }
   }, []);
 
   return (
   <ThemeProvider theme={geopsTheme}>
     <div className="map-container" id="map">
-    {mapRef.current && (
+    {mapInitialized && (
           <>
     <BasicMap map={mapRef.current} tabIndex={0} className="basic-map" />
-    <Geolocation map={mapRef.current} />
+    <div className='geolocate'>
+    <Geolocation map={mapRef.current} className="target" />
+      <p>Find Me</p>
+    </div>
     <FitExtent map={mapRef.current} extent={extent}>
       <Button>
         Fit to Boston
