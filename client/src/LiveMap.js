@@ -6,7 +6,7 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 import Overlay from 'react-spatial/components/Overlay';
 import { geopsTheme } from '@geops/geops-ui';
-import { responsiveFontSizes, ThemeProvider, ToggleButton } from '@mui/material';
+import { ThemeProvider, ToggleButton } from '@mui/material';
 import { FaFilter } from 'react-icons/fa';
 import Button from '@mui/material/Button';
 import FitExtent from 'react-spatial/components/FitExtent';
@@ -31,14 +31,6 @@ const layers = [
   trackerLayer,
 ];
 
-//  for the train route
-// const getVehicleCoord = (routeIdentifier) => {
-//   const [trajectory] = trackerLayer.getVehicle((traj) => {
-//     return traj.properties.route_identifier === routeIdentifier;
-//   });
-//   return trajectory && trajectory.properties.coordinate;
-// };
-
 const LiveMap = () => {
   const [lineInfos, setLineInfos] = useState(null);
   const [mapInitialized, setMapInitialized] = useState(false);
@@ -46,7 +38,6 @@ const LiveMap = () => {
   const [open, setOpen] = useState(false);
   const [currentTransport, setCurrentTransport] = useState(null);
   const mapRef = useRef(null);
-  const popupRef = useRef(null);
 
   useEffect(() => {
     if (!mapRef.current) {
