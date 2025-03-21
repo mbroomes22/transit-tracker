@@ -227,9 +227,13 @@ body {
   transition: max-height .3s ease;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.rte-header {
+span.rt-route-icon {
   border-radius: 20px;
   min-width: 20px;
   color: white;
@@ -242,4 +246,49 @@ body {
   text-align: center;
   font-size: 14px;
   font-weight: 700;
+}
+
+.rte-progress-and-stops {
+  font-size: 16px;
+  flex-grow: 20;
+  flex-shrink: 0;
+  overflow-y: scroll;
+  max-height: 600px;
+}
+
+.rt-route-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+
+}
+
+.rt-route-title {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.rt-route-station {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.rt-route-station:hover {
+  color: white;
+  background: #5b6dcd;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.rt-route-times {
+  display: flex;
+  flex-direction: column;
+  width: 40px;
+  min-width: 40px;
+  padding: 0 3px;
 }

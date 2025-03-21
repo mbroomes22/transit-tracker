@@ -30,12 +30,22 @@ const layers = [
   trackerLayer,
 ];
 
+//  for the train route?
+// const getVehicleCoord = (routeIdentifier) => {
+//   const [trajectory] = trackerLayer.getVehicle((traj) => {
+//     return traj.properties.route_identifier === routeIdentifier;
+//   });
+//   return trajectory && trajectory.properties.coordinate;
+// };
+
 const LiveMap = () => {
   const [lineInfos, setLineInfos] = useState(null);
   const [mapInitialized, setMapInitialized] = useState(false);
   const [open, setOpen] = useState(false);
   const [currentTrain, setCurrentTrain] = useState(null);
+  const [currentTransport, setCurrentTransport] = useState(null);
   const [trainLineColor, setTrainLineColor] = useState('black');
+  // const[vehicleId, setVehicleId] = useState(null)
   const mapRef = useRef(null);
   const popupRef = useRef(null);
 
@@ -55,9 +65,23 @@ const LiveMap = () => {
           setOpen(true);
         mapRef.current.forEachFeatureAtPixel(event.pixel, (feature) => {
           const vehicleInfo = feature.getProperties(); 
-          console.log("feature:", feature)
+          
           setCurrentTrain(vehicleInfo['line']['name']) 
           setTrainLineColor(vehicleInfo['line']['color'])
+          setCurrentTransport(vehicleInfo['type'])
+          // 1. Track the progress of vehicles along their routes.
+          // 2. Display up-to-date information about upcoming stops.
+          // 3. React to changes in planned routes or schedules.
+          if (feature) {
+            const vehicleId = vehicleInfo['train_id']
+          trackerLayer.api.subscribeStopSequence(vehicleId, ({ content: [stopSequence] }) => {
+            if (stopSequence) {
+              setLineInfos(stopSequence);
+            } });
+          } else {
+            setLineInfos(null);
+          }
+
           // const coordinates = feature.getGeometry().getCoordinates();
         });
       });
@@ -100,9 +124,33 @@ const LiveMap = () => {
               x
             </button>
             <div className='menu-collapsible-vertical'>
-              <p className='rte-header' style={{ backgroundColor:`${trainLineColor}`}}>Train Line: {currentTrain}</p>
-              {/* <p>Vehicle ID:</p>
-              <p>Current Stop:</p> */}
+              <div>{currentTransport}</div>
+              <div>
+                <RouteSchedule
+                  className='rte-progress-and-stops'
+                  // renderHeaderButtons={(routeIdentifier) => (
+                  //   {/* Should display a filter icon that only shows the actively clicked train & it's route.
+                    
+                  //   <ToggleButton 
+                  //     value="filter"
+                  //     selected={filterActive}
+                  //     onClick={() => {              
+                  //       if (!filterActive) {                
+                  //         trackerLayer.filter = (trajectory) => {
+                  //           return trajectory.properties.route_identifier === routeIdentifier;
+                  //         };
+                  //       } else {
+                  //         trackerLayer.filter = null;
+                  //       }
+                  //       setFilterActive(!filterActive);
+                  //     }}>
+                  //     <FaFilter />              
+                  //   </ToggleButton> */}
+                  // )}
+                  lineInfos={lineInfos}
+                  trackerLayer={trackerLayer}
+                />
+              </div>
             </div>
           </div>
         </Overlay>)}
@@ -115,13 +163,6 @@ const LiveMap = () => {
         Fit to Boston
       </Button>
     </FitExtent>
-    <RouteSchedule
-          lineInfos={lineInfos}
-          trackerLayer={trackerLayer}
-          renderHeaderButtons={(routeIdentifier) => (
-            <Button onClick={() => setLineInfos(null)}>Clear</Button>
-          )}
-        />
         </>
     )}
     </div>
