@@ -45,7 +45,6 @@ const LiveMap = () => {
   const [currentTrain, setCurrentTrain] = useState(null);
   const [currentTransport, setCurrentTransport] = useState(null);
   const [trainLineColor, setTrainLineColor] = useState('black');
-  // const[vehicleId, setVehicleId] = useState(null)
   const mapRef = useRef(null);
   const popupRef = useRef(null);
 
@@ -74,10 +73,13 @@ const LiveMap = () => {
           // 3. React to changes in planned routes or schedules.
           if (feature) {
             const vehicleId = vehicleInfo['train_id']
-          trackerLayer.api.subscribeStopSequence(vehicleId, ({ content: [stopSequence] }) => {
+          trackerLayer.api.subscribeStopSequence(vehicleId, (response) => {
+           if (response && response.content && Array.isArray(response.content) && response.content.length > 0) { 
+            const [stopSequence] = response.content;
             if (stopSequence) {
               setLineInfos(stopSequence);
-            } });
+            } }
+          });
           } else {
             setLineInfos(null);
           }
@@ -99,7 +101,7 @@ const LiveMap = () => {
     <div className="map-container" id="map">
     {mapInitialized && (
           <>
-    <BasicMap map={mapRef.current} tabIndex={0} className="basic-map" />
+    <BasicMap map={mapRef.current} extent={extent} tabIndex={0} className="basic-map" />
     {open && (
         <Overlay
           observe={mapRef.current}
