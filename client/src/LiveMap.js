@@ -6,7 +6,8 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 import Overlay from 'react-spatial/components/Overlay';
 import { geopsTheme } from '@geops/geops-ui';
-import { responsiveFontSizes, ThemeProvider } from '@mui/material';
+import { responsiveFontSizes, ThemeProvider, ToggleButton } from '@mui/material';
+import { FaFilter } from 'react-icons/fa';
 import Button from '@mui/material/Button';
 import FitExtent from 'react-spatial/components/FitExtent';
 import BasicMap from 'react-spatial/components/BasicMap';
@@ -30,7 +31,7 @@ const layers = [
   trackerLayer,
 ];
 
-//  for the train route?
+//  for the train route
 // const getVehicleCoord = (routeIdentifier) => {
 //   const [trajectory] = trackerLayer.getVehicle((traj) => {
 //     return traj.properties.route_identifier === routeIdentifier;
@@ -41,10 +42,9 @@ const layers = [
 const LiveMap = () => {
   const [lineInfos, setLineInfos] = useState(null);
   const [mapInitialized, setMapInitialized] = useState(false);
+  const [filterActive, setFilterActive] = useState(false);
   const [open, setOpen] = useState(false);
-  const [currentTrain, setCurrentTrain] = useState(null);
   const [currentTransport, setCurrentTransport] = useState(null);
-  const [trainLineColor, setTrainLineColor] = useState('black');
   const mapRef = useRef(null);
   const popupRef = useRef(null);
 
@@ -65,8 +65,6 @@ const LiveMap = () => {
         mapRef.current.forEachFeatureAtPixel(event.pixel, (feature) => {
           const vehicleInfo = feature.getProperties(); 
           
-          setCurrentTrain(vehicleInfo['line']['name']) 
-          setTrainLineColor(vehicleInfo['line']['color'])
           setCurrentTransport(vehicleInfo['type'])
           // 1. Track the progress of vehicles along their routes.
           // 2. Display up-to-date information about upcoming stops.
@@ -130,25 +128,25 @@ const LiveMap = () => {
               <div>
                 <RouteSchedule
                   className='rte-progress-and-stops'
-                  // renderHeaderButtons={(routeIdentifier) => (
-                  //   {/* Should display a filter icon that only shows the actively clicked train & it's route.
+                  renderHeaderButtons={(routeIdentifier) => (
+                    //  Should display a filter icon that only shows the actively clicked train & it's route.
                     
-                  //   <ToggleButton 
-                  //     value="filter"
-                  //     selected={filterActive}
-                  //     onClick={() => {              
-                  //       if (!filterActive) {                
-                  //         trackerLayer.filter = (trajectory) => {
-                  //           return trajectory.properties.route_identifier === routeIdentifier;
-                  //         };
-                  //       } else {
-                  //         trackerLayer.filter = null;
-                  //       }
-                  //       setFilterActive(!filterActive);
-                  //     }}>
-                  //     <FaFilter />              
-                  //   </ToggleButton> */}
-                  // )}
+                    <ToggleButton 
+                      value="filter"
+                      selected={filterActive}
+                      onClick={() => {              
+                        if (!filterActive) {                
+                          trackerLayer.filter = (trajectory) => {
+                            return trajectory.properties.route_identifier === routeIdentifier;
+                          };
+                        } else {
+                          trackerLayer.filter = null;
+                        }
+                        setFilterActive(!filterActive);
+                      }}>
+                      <FaFilter />              
+                    </ToggleButton> 
+                  )}
                   lineInfos={lineInfos}
                   trackerLayer={trackerLayer}
                 />
