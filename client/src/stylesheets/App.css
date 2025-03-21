@@ -163,10 +163,17 @@ body {
   align-items: center;
 }
 
+.target {
+  position: absolute;
+  top: 15%;
+  right: 1%;
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.348);
+}
+
 .target:hover {
   cursor: pointer;
-  background-color: rgb(212, 203, 203);
-  box-shadow: -.4em 0 .4em rgb(212, 203, 203);
+  background-color: rgba(255, 255, 255, 0.111);
 }
 
 .basic-map {
@@ -183,7 +190,7 @@ body {
   border: 1px solid #ccc;
   margin:1px;
   position: absolute;
-  top: 70px;
+  top: 10%;
   min-width: 300px;
   max-width: 450px;
   box-shadow: 0 10px 15px rgba(53, 53, 53, .125);
@@ -274,4 +281,28 @@ span.rt-route-icon {
 
 .rt-passed {
   opacity: .7;
+}
+
+.zoom {
+  position: absolute;
+  top: 20%;
+  right: 0;
+  background-color: grey;
+  border-radius: 2rem;
+  padding: 20px 0;
+  z-index: 40;
+  margin: 5px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 5px 0px;
+}
+
+.ol-zoomslider.ol-unselectable.ol-control {
+  display: flex;
+  justify-content: center;
+  background: #676363d5;
+  width: 30px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, .199);
+  border-radius: 40px;
 }

@@ -13,6 +13,7 @@ import FitExtent from 'react-spatial/components/FitExtent';
 import BasicMap from 'react-spatial/components/BasicMap';
 import Geolocation from 'react-spatial/components/Geolocation';
 import RouteSchedule from 'react-spatial/components/RouteSchedule';
+import Zoom from 'react-spatial/components/Zoom';
 import 'ol/ol.css';
 
 // const extent = [-8100000, 4950000, -7900000, 5300000] // for MA
@@ -91,6 +92,8 @@ const LiveMap = () => {
     {mapInitialized && (
           <>
     <BasicMap map={mapRef.current} extent={extent} tabIndex={0} className="basic-map" />
+    <Zoom className="zoom"  map={mapRef.current} zoomSlider />
+    <Geolocation map={mapRef.current} className="target" />
     {open && (
         <Overlay
           observe={mapRef.current}
@@ -120,7 +123,7 @@ const LiveMap = () => {
                 <RouteSchedule
                   className='rte-progress-and-stops'
                   renderHeaderButtons={(routeIdentifier) => (
-                    //  Should display a filter icon that only shows the actively clicked train & it's route.
+                    //  displays a filter icon that only shows the actively clicked train & it's route.
                     
                     <ToggleButton 
                       value="filter"
@@ -145,10 +148,6 @@ const LiveMap = () => {
             </div>
           </div>
         </Overlay>)}
-    <div className='geolocate'>
-    <Geolocation map={mapRef.current} className="target" />
-      <p>Find Me</p>
-    </div>
     <FitExtent map={mapRef.current} extent={extent}>
       <Button>
         Fit to Boston
