@@ -20,7 +20,8 @@ import Point from 'ol/geom/Point';
 import LineString from 'ol/geom/LineString';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { Style, Icon, Stroke } from 'ol/style';
+import { Style, Fill, Stroke, Icon, Text, Circle as CircleStyle } from 'ol/style';
+// import CircleStyle from 'ol/style/Circle';
 
 
 const trackerLayer = new TrackerLayer({
@@ -78,9 +79,10 @@ const LiveMap = () => {
                 const [stopSequence] = response.content;
                 if (stopSequence) {
                   setLineInfos(stopSequence);
-                  displayStopsOnMap(stopSequence['stations']);
+                  const mapStops = stopSequence['stations']
                   const route = stopSequence['stations'].map((stop) => stop['coordinate']);
                   const color = stopSequence['color'];
+                  displayStopsOnMap(mapStops, color);
                   highlightRoute(route, color);
                 }
               }
@@ -109,7 +111,7 @@ const LiveMap = () => {
     }
   }, []);
 
-  const displayStopsOnMap = (stops) => {
+  const displayStopsOnMap = (stops, color) => {
     if (stopsLayer) {
       mapRef.current.removeLayer(stopsLayer);
       stopsLayer.getSource().clear();
@@ -122,9 +124,11 @@ const LiveMap = () => {
       });
       feature.setStyle(
         new Style({
-          image: new Icon({
-            src: 'https://cdn.rawgit.com/openlayers/ol3/master/examples/data/icon.png',
-            scale: 0.5,
+          image: new CircleStyle({
+            radius: 5,
+            fill: new Fill({
+              color: `${color || 'blue'}`
+            })
           }),
         })
       );
