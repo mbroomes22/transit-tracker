@@ -20,34 +20,34 @@ default: &default
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: michellebroomes # role previously added
-  password: <%= ENV['DATABASE_PASSWORD'] %> # variable previously added
+  password: ENV[DATABASE_PASSWORD] # variable previously added
 # You must remove the '+' signs to be able to migrate your database
 
 
 development:
   <<: *default
-  database: quote_editor_development
+  database: development
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: quote_editor
+  username: michellebroomes
 
   # The password associated with the PostgreSQL role (username).
-  #password:
+  password: ENV[DATABASE_PASSWORD]
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
   # domain sockets, so uncomment these lines.
-  #host: localhost
+  host: localhost
 
   # The TCP port the server listens on. Defaults to 5432.
   # If your server runs on a different port number, change accordingly.
-  #port: 5432
+  port: 5432
 
   # Schema search path. The server defaults to $user,public
-  #schema_search_path: myapp,sharedapp,public
+  schema_search_path: myapp,sharedapp,public
 
   # Minimum log levels, in increasing order:
   #   debug5, debug4, debug3, debug2, debug1,
@@ -100,3 +100,5 @@ production:
     <<: *primary_production
     database: quote_editor_production_cable
     migrations_paths: db/cable_migrate
+
+    
