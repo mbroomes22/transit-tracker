@@ -306,3 +306,19 @@ span.rt-route-icon {
   box-shadow: 0 0 8px rgba(0, 0, 0, .199);
   border-radius: 40px;
 }
+
+.rt-route-delay {
+  display: flex;
+  flex-direction: column;
+  width: 40px;
+  min-width: 40px;
+  padding: 0 3px;
+}
+
+.custom-popup {
+  position: absolute;
+  background-color: white;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid black;
+}

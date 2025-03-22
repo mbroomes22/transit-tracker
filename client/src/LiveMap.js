@@ -15,10 +15,13 @@ import Geolocation from 'react-spatial/components/Geolocation';
 import RouteSchedule from 'react-spatial/components/RouteSchedule';
 import Zoom from 'react-spatial/components/Zoom';
 import 'ol/ol.css';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import LineString from 'ol/geom/LineString';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import { Style, Icon, Stroke } from 'ol/style';
 
-// const extent = [-8100000, 4950000, -7900000, 5300000] // for MA
-// const extent = [-7930000, 5190000, -7890000, 5230000] // for Boston, MA
-const extent = [-7930000, 5195000, -7895000, 5228000]; // Approximate extent for downtown Boston, MA
 
 const trackerLayer = new TrackerLayer({
   url: 'wss://api.geops.io/tracker-ws/v1/ws',
@@ -33,11 +36,16 @@ const layers = [
 ];
 
 const LiveMap = () => {
+  const [extent, setExtent] = useState([-7930000, 5195000, -7895000, 5228000]); // Approximate extent for downtown Boston, MA
   const [lineInfos, setLineInfos] = useState(null);
   const [mapInitialized, setMapInitialized] = useState(false);
   const [filterActive, setFilterActive] = useState(false);
   const [open, setOpen] = useState(false);
   const [currentTransport, setCurrentTransport] = useState(null);
+  const [stopsLayer, setStopsLayer] = useState(null);
+  const [routeLayer, setRouteLayer] = useState(null);
+  const [popupContent, setPopupContent] = useState('');
+  const [popupPosition, setPopupPosition] = useState(null);
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -55,26 +63,41 @@ const LiveMap = () => {
       mapRef.current.on('click', (event) => {
           setOpen(true);
         mapRef.current.forEachFeatureAtPixel(event.pixel, (feature) => {
+          if (feature) {
           const vehicleInfo = feature.getProperties(); 
           
-          setCurrentTransport(vehicleInfo['type'])
           // 1. Track the progress of vehicles along their routes.
           // 2. Display up-to-date information about upcoming stops.
           // 3. React to changes in planned routes or schedules.
-          if (feature) {
+          if (vehicleInfo['train_id']) {
+            // handle vehicle clicks
+            setCurrentTransport(vehicleInfo['type'])
             const vehicleId = vehicleInfo['train_id']
-          trackerLayer.api.subscribeStopSequence(vehicleId, (response) => {
-           if (response && response.content && Array.isArray(response.content) && response.content.length > 0) { 
-            const [stopSequence] = response.content;
-            if (stopSequence) {
-              setLineInfos(stopSequence);
-            } }
-          });
-          } else {
-            setLineInfos(null);
+            trackerLayer.api.subscribeStopSequence(vehicleId, (response) => {
+              if (response && response.content && Array.isArray(response.content) && response.content.length > 0) { 
+                const [stopSequence] = response.content;
+                if (stopSequence) {
+                  setLineInfos(stopSequence);
+                  displayStopsOnMap(stopSequence['stations']);
+                  const route = stopSequence['stations'].map((stop) => stop['coordinate']);
+                  const color = stopSequence['color'];
+                  highlightRoute(route, color);
+                }
+              }
+            });
+          } 
+          else {
+          // handle stop clicks
+            // const stopName = feature['values_']['name'];
+            // console.log('stopName name:', stopName);
+            // setPopupContent(stopName);
+            // console.log('event.coordinate:', event.coordinate);
+            // const pixel = mapRef.current.getPixelFromCoordinate(event.coordinate)
+            // setPopupPosition(event.coordinate);
           }
-
-          // const coordinates = feature.getGeometry().getCoordinates();
+        } else {
+          setLineInfos(null);
+        }
         });
       });
       mapRef.current.on('pointermove', (event) => {
@@ -85,6 +108,75 @@ const LiveMap = () => {
       setMapInitialized(true);
     }
   }, []);
+
+  const displayStopsOnMap = (stops) => {
+    if (stopsLayer) {
+      mapRef.current.removeLayer(stopsLayer);
+      stopsLayer.getSource().clear();
+    }
+
+     const features = stops.map((stop) => {
+      const feature = new Feature({
+        geometry: new Point(stop['coordinate']),
+        name: stop['stationName'],
+      });
+      feature.setStyle(
+        new Style({
+          image: new Icon({
+            src: 'https://cdn.rawgit.com/openlayers/ol3/master/examples/data/icon.png',
+            scale: 0.5,
+          }),
+        })
+      );
+        return feature;
+    });
+
+    const vectorSource = new VectorSource({
+      features: features,
+    });
+
+    const vectorLayer = new VectorLayer({
+      source: vectorSource,
+    });
+
+    mapRef.current.addLayer(vectorLayer);
+    setStopsLayer(vectorLayer);
+  };
+
+
+  const highlightRoute = (route, color) => {
+    if (!route || !Array.isArray(route) || route.length === 0) {
+      console.error('Invalid route:', route);
+      return;
+    }
+    if (routeLayer) {
+      mapRef.current.removeLayer(routeLayer);
+    }
+
+    const routeFeature = new Feature({
+      geometry: new LineString(route),
+    });
+
+    routeFeature.setStyle(
+      new Style({
+        stroke: new Stroke({
+          color: `${color || 'blue'}`,
+          width: 3,
+        }),
+      })
+    );
+
+    const routeSource = new VectorSource({
+      features: [routeFeature],
+    });
+
+    const newRouteLayer = new VectorLayer({
+      source: routeSource,
+    });
+
+    mapRef.current.addLayer(newRouteLayer);
+    setRouteLayer(newRouteLayer);
+  }
 
   return (
   <ThemeProvider theme={geopsTheme}>
@@ -153,6 +245,11 @@ const LiveMap = () => {
         Fit to Boston
       </Button>
     </FitExtent>
+    {popupContent && popupPosition && (
+      <div className='custom-popup' style={{left: `${popupPosition[0]}px`, top: `${popupPosition[1]}px`}}>
+        {popupContent}
+      </div>
+    )}
         </>
     )}
     </div>
