@@ -9,6 +9,7 @@ import { geopsTheme } from '@geops/geops-ui';
 import { ThemeProvider, ToggleButton } from '@mui/material';
 import { FaFilter } from 'react-icons/fa';
 import Button from '@mui/material/Button';
+import Popover from '@mui/material/Popover';
 import FitExtent from 'react-spatial/components/FitExtent';
 import BasicMap from 'react-spatial/components/BasicMap';
 import Geolocation from 'react-spatial/components/Geolocation';
@@ -21,7 +22,6 @@ import LineString from 'ol/geom/LineString';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Style, Fill, Stroke, Icon, Text, Circle as CircleStyle } from 'ol/style';
-// import CircleStyle from 'ol/style/Circle';
 
 
 const trackerLayer = new TrackerLayer({
@@ -47,8 +47,9 @@ const LiveMap = () => {
   const [routeLayer, setRouteLayer] = useState(null);
   const [openVectorLayers, setOpenVectorLayers] = useState([]);
   const [openRouteLayers, setOpenRouteLayers] = useState([]);
-  // const [popupContent, setPopupContent] = useState('');
+  const [popupContent, setPopupContent] = useState('');
   // const [popupPosition, setPopupPosition] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [updateLayers, setUpdateLayers] = useState(false);
   const [closeAllLayers, setCloseAllLayers] = useState(false);
   const mapRef = useRef(null);
@@ -96,12 +97,17 @@ const LiveMap = () => {
           } 
           else {
           // handle stop clicks
-            // const stopName = feature['values_']['name'];
-            // console.log('stopName name:', stopName);
-            // setPopupContent(stopName);
-            // console.log('event.coordinate:', event.coordinate);
-            // const pixel = mapRef.current.getPixelFromCoordinate(event.coordinate)
-            // setPopupPosition(event.coordinate);
+            const stopName = feature['values_']['name'];
+            setPopupContent(stopName);
+            const coordinates = event.coordinate;
+            const pixel = mapRef.current.getPixelFromCoordinate(coordinates);
+            const mapContainer = document.getElementById('map');
+            const virtualAnchor = document.createElement('div');
+            virtualAnchor.style.position = 'absolute';
+            virtualAnchor.style.left = `${pixel[0]}px`;
+            virtualAnchor.style.top = `${pixel[1]}px`;
+            mapContainer.appendChild(virtualAnchor);
+            setAnchorEl(virtualAnchor);
           }
         } else {
           setLineInfos(null);
@@ -223,6 +229,13 @@ const LiveMap = () => {
     setUpdateLayers(true);
   }
 
+  const handlePopoverClose = () => {
+    if (anchorEl) {
+      anchorEl.remove();
+    }
+    setAnchorEl(null);
+  };
+
   return (
   <ThemeProvider theme={geopsTheme}>
     <div className="map-container" id="map">
@@ -291,6 +304,21 @@ const LiveMap = () => {
         Fit to Boston
       </Button>
     </FitExtent>
+    <Popover 
+      open={Boolean(anchorEl)}
+      anchorEl={anchorEl}
+      onClose={handlePopoverClose}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
+    >
+      {popupContent}
+    </Popover>
     {/* {popupContent && popupPosition && (
       <div className='custom-popup' style={{left: `${popupPosition[0]}px`, top: `${popupPosition[1]}px`}}>
         {popupContent}
