@@ -30,8 +30,21 @@ FROM base AS build
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config && \
+    apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config libpq-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    # RUN apt-get update && apt-get install --no-install-recommends -y \
+    # build-essential \
+    # git \
+    # libyaml-dev \
+    # pkg-config \
+    # google-chrome-stable \
+    # libpq-dev
+
+    # RUN apt-get update -qq && \
+    # apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config libpq-dev && \
+    # rm -RUN apt-get update -qq && \
+    # apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config libpq-dev && \
+    # rm -
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
