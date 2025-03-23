@@ -32,19 +32,6 @@ FROM base AS build
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config libpq-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
-    # RUN apt-get update && apt-get install --no-install-recommends -y \
-    # build-essential \
-    # git \
-    # libyaml-dev \
-    # pkg-config \
-    # google-chrome-stable \
-    # libpq-dev
-
-    # RUN apt-get update -qq && \
-    # apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config libpq-dev && \
-    # rm -RUN apt-get update -qq && \
-    # apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config libpq-dev && \
-    # rm -
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
@@ -66,6 +53,11 @@ RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Final stage for app image
 FROM base
+
+# Install PostgreSQL client library
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y libpq5 && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built artifacts: gems, application
 COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
