@@ -45,8 +45,11 @@ const LiveMap = () => {
   const [currentTransport, setCurrentTransport] = useState(null);
   const [stopsLayer, setStopsLayer] = useState(null);
   const [routeLayer, setRouteLayer] = useState(null);
+  const [previousVectorLayer, setPreviousVectorLayer] = useState(null);
+  const [previousRouteLayer, setPreviousRouteLayer] = useState(null);
   const [popupContent, setPopupContent] = useState('');
   const [popupPosition, setPopupPosition] = useState(null);
+  const [updateLayers, setUpdateLayers] = useState(false);
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -111,6 +114,18 @@ const LiveMap = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (updateLayers) {
+      if (previousRouteLayer) {
+        mapRef.current.removeLayer(previousRouteLayer);
+      }
+      if (previousVectorLayer) {
+        mapRef.current.removeLayer(previousVectorLayer);
+      }
+      setUpdateLayers(false);
+    }
+  }, [updateLayers, previousRouteLayer, previousVectorLayer]);
+
   const displayStopsOnMap = (stops, color) => {
     if (stopsLayer) {
       mapRef.current.removeLayer(stopsLayer);
@@ -145,6 +160,8 @@ const LiveMap = () => {
 
     mapRef.current.addLayer(vectorLayer);
     setStopsLayer(vectorLayer);
+
+    setPreviousVectorLayer(vectorLayer);
   };
 
 
@@ -180,6 +197,8 @@ const LiveMap = () => {
 
     mapRef.current.addLayer(newRouteLayer);
     setRouteLayer(newRouteLayer);
+
+    setPreviousRouteLayer(newRouteLayer);
   }
 
   return (
@@ -209,6 +228,7 @@ const LiveMap = () => {
               className="menu-wrapper-closer"
               onClick={() => {
                 setOpen(false);
+                setUpdateLayers(true);
               }}
             >
               x
