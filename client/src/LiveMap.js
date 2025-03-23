@@ -45,11 +45,12 @@ const LiveMap = () => {
   const [currentTransport, setCurrentTransport] = useState(null);
   const [stopsLayer, setStopsLayer] = useState(null);
   const [routeLayer, setRouteLayer] = useState(null);
-  const [previousVectorLayer, setPreviousVectorLayer] = useState(null);
-  const [previousRouteLayer, setPreviousRouteLayer] = useState(null);
-  const [popupContent, setPopupContent] = useState('');
-  const [popupPosition, setPopupPosition] = useState(null);
+  const [openVectorLayers, setOpenVectorLayers] = useState([]);
+  const [openRouteLayers, setOpenRouteLayers] = useState([]);
+  // const [popupContent, setPopupContent] = useState('');
+  // const [popupPosition, setPopupPosition] = useState(null);
   const [updateLayers, setUpdateLayers] = useState(false);
+  const [closeAllLayers, setCloseAllLayers] = useState(false);
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -65,7 +66,9 @@ const LiveMap = () => {
       });
 
       mapRef.current.on('click', (event) => {
+        // opens the overlay with vehicle info
           setOpen(true);
+          // setUpdateLayers(true);
         mapRef.current.forEachFeatureAtPixel(event.pixel, (feature) => {
           if (feature) {
           const vehicleInfo = feature.getProperties(); 
@@ -105,6 +108,7 @@ const LiveMap = () => {
         }
         });
       });
+      // Change mouse cursor when hovering over a feature
       mapRef.current.on('pointermove', (event) => {
         const hit = mapRef.current.hasFeatureAtPixel(event.pixel);
         mapRef.current.getTargetElement().style.cursor = hit ? 'pointer' : '';
@@ -114,18 +118,34 @@ const LiveMap = () => {
     }
   }, []);
 
+  // Remove higlighted routes & stops when updateLayers is true
   useEffect(() => {
     if (updateLayers) {
-      if (previousRouteLayer) {
-        mapRef.current.removeLayer(previousRouteLayer);
+      if (openRouteLayers.length > 1) {
+        // remove each open layer from the map.
+        // remove each open layer from the openRouteLayers array.
+        const removalLayers = openRouteLayers.splice(0, openRouteLayers.length - 1);
+        removalLayers.forEach((layer) => mapRef.current.removeLayer(layer));
       }
-      if (previousVectorLayer) {
-        mapRef.current.removeLayer(previousVectorLayer);
+      if (openVectorLayers.length > 1) {
+        const removalLayers = openVectorLayers.splice(0, openVectorLayers.length - 1);
+        removalLayers.forEach((layer) => mapRef.current.removeLayer(layer));
       }
       setUpdateLayers(false);
+    } if (closeAllLayers) {
+      if (openRouteLayers.length > 0) {
+        openRouteLayers.forEach((layer) => mapRef.current.removeLayer(layer));
+        setOpenRouteLayers([]);
+      }
+      if (openVectorLayers.length > 0) {
+        openVectorLayers.forEach((layer) => mapRef.current.removeLayer(layer));
+        setOpenVectorLayers([]);
+      }
+      setCloseAllLayers(false);
     }
-  }, [updateLayers, previousRouteLayer, previousVectorLayer]);
+  }, [updateLayers, closeAllLayers, openRouteLayers, openVectorLayers]);
 
+  // Display stops on map
   const displayStopsOnMap = (stops, color) => {
     if (stopsLayer) {
       mapRef.current.removeLayer(stopsLayer);
@@ -161,10 +181,10 @@ const LiveMap = () => {
     mapRef.current.addLayer(vectorLayer);
     setStopsLayer(vectorLayer);
 
-    setPreviousVectorLayer(vectorLayer);
+    setOpenVectorLayers((prevLayers) => [...prevLayers, vectorLayer]);
   };
 
-
+// Highlights vehicle route on map
   const highlightRoute = (route, color) => {
     if (!route || !Array.isArray(route) || route.length === 0) {
       console.error('Invalid route:', route);
@@ -198,7 +218,8 @@ const LiveMap = () => {
     mapRef.current.addLayer(newRouteLayer);
     setRouteLayer(newRouteLayer);
 
-    setPreviousRouteLayer(newRouteLayer);
+    setOpenRouteLayers((prevLayers) => [...prevLayers, newRouteLayer]);
+    setUpdateLayers(true);
   }
 
   return (
@@ -228,7 +249,7 @@ const LiveMap = () => {
               className="menu-wrapper-closer"
               onClick={() => {
                 setOpen(false);
-                setUpdateLayers(true);
+                setCloseAllLayers(true);
               }}
             >
               x
@@ -269,11 +290,11 @@ const LiveMap = () => {
         Fit to Boston
       </Button>
     </FitExtent>
-    {popupContent && popupPosition && (
+    {/* {popupContent && popupPosition && (
       <div className='custom-popup' style={{left: `${popupPosition[0]}px`, top: `${popupPosition[1]}px`}}>
         {popupContent}
       </div>
-    )}
+    )} */}
         </>
     )}
     </div>
