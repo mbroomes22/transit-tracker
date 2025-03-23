@@ -96,6 +96,7 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
         run: |
           set -x
+          bin/rails db:create db:schema:load
           bin/rails db:test:prepare
           bin/rails test
           bin/rails test:system
