@@ -16,7 +16,7 @@ Install deps: `gem install bundler && bundle install`.  Run `bundle exec rake` t
 
 To see live app go to webpage: 
 
-APIs from (https://developer.geops.io/):
+APIs from (https://developer.geops.io/) & (https://www.mbta.com/developers/v3-api):
 Realtime Websocket API - To track Vehicle positions & stop sequences based on scheduled times & real time updates.
 Maps API - Obtains maps based on mapbox vector tiles.
 

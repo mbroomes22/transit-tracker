@@ -380,6 +380,9 @@ DEPENDENCIES
   pry-byebug
   puma (>= 5.0)
   rails (~> 8.0.2)
+  rubocop (~> 1.0)
+  rubocop-performance
+  rubocop-rails
   rubocop-rails-omakase
   selenium-webdriver
   solid_cable
