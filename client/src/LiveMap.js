@@ -48,7 +48,6 @@ const LiveMap = () => {
   const [openVectorLayers, setOpenVectorLayers] = useState([]);
   const [openRouteLayers, setOpenRouteLayers] = useState([]);
   const [popupContent, setPopupContent] = useState('');
-  // const [popupPosition, setPopupPosition] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [updateLayers, setUpdateLayers] = useState(false);
   const [closeAllLayers, setCloseAllLayers] = useState(false);
@@ -240,90 +239,96 @@ const LiveMap = () => {
   <ThemeProvider theme={geopsTheme}>
     <div className="map-container" id="map">
     {mapInitialized && (
-          <>
-    <BasicMap map={mapRef.current} extent={extent} tabIndex={0} className="basic-map" />
-    <Zoom className="zoom"  map={mapRef.current} zoomSlider />
-    <Geolocation map={mapRef.current} className="target" />
-    {open && (
-        <Overlay
-          observe={mapRef.current}
-          className="ol-menu-wrapper"
-          mobileSize={{
-              minimalHeight: '25%',
-              maximalHeight: '80%',
-              defaultSize: {
-                height: '40%',
-                width: '100%',
-              },
+        <>
+          <BasicMap map={mapRef.current} extent={extent} tabIndex={0} className="basic-map" />
+          <Zoom className="zoom"  map={mapRef.current} zoomSlider />
+          <Geolocation map={mapRef.current} className="target" />
+          {open && (
+              <Overlay
+                observe={mapRef.current}
+                className="ol-menu-wrapper"
+                mobileSize={{
+                    minimalHeight: '25%',
+                    maximalHeight: '80%',
+                    defaultSize: {
+                      height: '40%',
+                      width: '100%',
+                    },
+                  }}
+              >
+                <div>
+                  <button
+                    id="popup-closer" 
+                    className="menu-wrapper-closer"
+                    onClick={() => {
+                      setOpen(false);
+                      setCloseAllLayers(true);
+                    }}
+                  >
+                    x
+                  </button>
+                  <div className='menu-collapsible-vertical'>
+                    <div>{currentTransport}</div>
+                    <div>
+                      <RouteSchedule
+                        className='rte-progress-and-stops'
+                        renderHeaderButtons={(routeIdentifier) => (
+                          //  displays a filter icon that only shows the actively clicked train & it's route.
+                          
+                          <ToggleButton 
+                            value="filter"
+                            selected={filterActive}
+                            onClick={() => {              
+                              if (!filterActive) {                
+                                trackerLayer.filter = (trajectory) => {
+                                  return trajectory.properties.route_identifier === routeIdentifier;
+                                };
+                              } else {
+                                trackerLayer.filter = null;
+                              }
+                              setFilterActive(!filterActive);
+                            }}>
+                            <FaFilter />              
+                          </ToggleButton> 
+                        )}
+                        lineInfos={lineInfos}
+                        trackerLayer={trackerLayer}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Overlay>)}
+          <FitExtent map={mapRef.current} extent={extent}>
+            <Button>
+              Fit to Boston
+            </Button>
+          </FitExtent>
+          <Popover 
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            onClose={handlePopoverClose}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
             }}
-        >
-          <div>
-            <button
-              id="popup-closer" 
-              className="menu-wrapper-closer"
-              onClick={() => {
-                setOpen(false);
-                setCloseAllLayers(true);
-              }}
-            >
-              x
-            </button>
-            <div className='menu-collapsible-vertical'>
-              <div>{currentTransport}</div>
-              <div>
-                <RouteSchedule
-                  className='rte-progress-and-stops'
-                  renderHeaderButtons={(routeIdentifier) => (
-                    //  displays a filter icon that only shows the actively clicked train & it's route.
-                    
-                    <ToggleButton 
-                      value="filter"
-                      selected={filterActive}
-                      onClick={() => {              
-                        if (!filterActive) {                
-                          trackerLayer.filter = (trajectory) => {
-                            return trajectory.properties.route_identifier === routeIdentifier;
-                          };
-                        } else {
-                          trackerLayer.filter = null;
-                        }
-                        setFilterActive(!filterActive);
-                      }}>
-                      <FaFilter />              
-                    </ToggleButton> 
-                  )}
-                  lineInfos={lineInfos}
-                  trackerLayer={trackerLayer}
-                />
-              </div>
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            sx={{
+              '& .MuiPopover-paper': {
+                        backgroundColor: 'white',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        fontWeight: 'bold',
+                        boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',},
+            }}
+          > 
+            <div className='popup-content'>
+              <div>Stop Name:</div>
+              <div>{popupContent}</div>
             </div>
-          </div>
-        </Overlay>)}
-    <FitExtent map={mapRef.current} extent={extent}>
-      <Button>
-        Fit to Boston
-      </Button>
-    </FitExtent>
-    <Popover 
-      open={Boolean(anchorEl)}
-      anchorEl={anchorEl}
-      onClose={handlePopoverClose}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'left',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'left',
-      }}
-    >
-      {popupContent}
-    </Popover>
-    {/* {popupContent && popupPosition && (
-      <div className='custom-popup' style={{left: `${popupPosition[0]}px`, top: `${popupPosition[1]}px`}}>
-        {popupContent}
-      </div>
-    )} */}
+          </Popover>
         </>
     )}
     </div>
