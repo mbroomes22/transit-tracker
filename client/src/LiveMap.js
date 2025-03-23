@@ -118,7 +118,8 @@ const LiveMap = () => {
     }
   }, []);
 
-  // Remove higlighted routes & stops when updateLayers is true
+  // Remove all highlighted routes & stops except for the most recently clicked vehicle when updateLayers is true.
+  // Remove all layers when closeAllLayers is true.
   useEffect(() => {
     if (updateLayers) {
       if (openRouteLayers.length > 1) {
