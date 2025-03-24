@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import TileLayer from 'ol/layer/Tile';
 import { RealtimeLayer as TrackerLayer } from 'mobility-toolbox-js/ol';
 import OSM from 'ol/source/OSM';
@@ -21,7 +21,7 @@ import Point from 'ol/geom/Point';
 import LineString from 'ol/geom/LineString';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { Style, Fill, Stroke, Icon, Text, Circle as CircleStyle } from 'ol/style';
+import { Style, Fill, Stroke, Circle as CircleStyle } from 'ol/style';
 
 
 const trackerLayer = new TrackerLayer({
@@ -37,14 +37,12 @@ const layers = [
 ];
 
 const LiveMap = () => {
-  const [extent, setExtent] = useState([-7930000, 5195000, -7895000, 5228000]); // Approximate extent for downtown Boston, MA
+  const extent = [-7930000, 5195000, -7895000, 5228000]; // Approximate extent for downtown Boston, MA
   const [lineInfos, setLineInfos] = useState(null);
   const [mapInitialized, setMapInitialized] = useState(false);
   const [filterActive, setFilterActive] = useState(false);
   const [open, setOpen] = useState(false);
   const [currentTransport, setCurrentTransport] = useState(null);
-  const [stopsLayer, setStopsLayer] = useState(null);
-  const [routeLayer, setRouteLayer] = useState(null);
   const [openVectorLayers, setOpenVectorLayers] = useState([]);
   const [openRouteLayers, setOpenRouteLayers] = useState([]);
   const [popupContent, setPopupContent] = useState('');
@@ -52,6 +50,82 @@ const LiveMap = () => {
   const [updateLayers, setUpdateLayers] = useState(false);
   const [closeAllLayers, setCloseAllLayers] = useState(false);
   const mapRef = useRef(null);
+
+
+  // Display stops on map
+  const displayStopsOnMap = useCallback((stops, color) => {
+
+    // find all stops and create a feature w/styling for each
+     const features = stops.map((stop) => {
+      const feature = new Feature({
+        geometry: new Point(stop['coordinate']),
+        name: stop['stationName'],
+      });
+      feature.setStyle(
+        new Style({
+          image: new CircleStyle({
+            radius: 5,
+            fill: new Fill({
+              color: `${color || 'blue'}`
+            })
+          }),
+        })
+      );
+        return feature;
+    });
+
+    const vectorSource = new VectorSource({
+      features: features,
+    });
+
+    const vectorLayer = new VectorLayer({
+      source: vectorSource,
+    });
+
+    // add the vector layer of stops to the map
+    mapRef.current.addLayer(vectorLayer);
+    // add the stops vector layer to the array so we can find & remove it later
+    setOpenVectorLayers((prevLayers) => [...prevLayers, vectorLayer]);
+  }, []);
+
+
+  // Highlights vehicle route on map
+  const highlightRoute = useCallback((route, color) => {
+    // ensure route is valid. it should be an array of coordinates.
+    if (!route || !Array.isArray(route) || route.length === 0) {
+      console.error('Invalid route:', route);
+      return;
+    }
+
+    // create a feature with a styled line through the route
+    const routeFeature = new Feature({
+      geometry: new LineString(route),
+    });
+    routeFeature.setStyle(
+      new Style({
+        stroke: new Stroke({
+          color: `${color || 'blue'}`,
+          width: 3,
+        }),
+      })
+    );
+
+    const routeSource = new VectorSource({
+      features: [routeFeature],
+    });
+
+    const newRouteLayer = new VectorLayer({
+      source: routeSource,
+    });
+
+    // add the vector layer of routes to the map
+    mapRef.current.addLayer(newRouteLayer);
+    // add the route vector layer to the array so we can find & remove it later
+    setOpenRouteLayers((prevLayers) => [...prevLayers, newRouteLayer]);
+    // update the map layers to remove all previously shown routes & stops
+    setUpdateLayers(true);
+  }, []);
+
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -121,7 +195,8 @@ const LiveMap = () => {
 
       setMapInitialized(true);
     }
-  }, []);
+  }, [displayStopsOnMap, highlightRoute]);
+
 
   // Remove all highlighted routes & stops except for the most recently clicked vehicle when updateLayers is true.
   // Remove all layers when closeAllLayers is true.
@@ -151,82 +226,6 @@ const LiveMap = () => {
     }
   }, [updateLayers, closeAllLayers, openRouteLayers, openVectorLayers]);
 
-  // Display stops on map
-  const displayStopsOnMap = (stops, color) => {
-    if (stopsLayer) {
-      mapRef.current.removeLayer(stopsLayer);
-      stopsLayer.getSource().clear();
-    }
-
-     const features = stops.map((stop) => {
-      const feature = new Feature({
-        geometry: new Point(stop['coordinate']),
-        name: stop['stationName'],
-      });
-      feature.setStyle(
-        new Style({
-          image: new CircleStyle({
-            radius: 5,
-            fill: new Fill({
-              color: `${color || 'blue'}`
-            })
-          }),
-        })
-      );
-        return feature;
-    });
-
-    const vectorSource = new VectorSource({
-      features: features,
-    });
-
-    const vectorLayer = new VectorLayer({
-      source: vectorSource,
-    });
-
-    mapRef.current.addLayer(vectorLayer);
-    setStopsLayer(vectorLayer);
-
-    setOpenVectorLayers((prevLayers) => [...prevLayers, vectorLayer]);
-  };
-
-// Highlights vehicle route on map
-  const highlightRoute = (route, color) => {
-    if (!route || !Array.isArray(route) || route.length === 0) {
-      console.error('Invalid route:', route);
-      return;
-    }
-    if (routeLayer) {
-      mapRef.current.removeLayer(routeLayer);
-    }
-
-    const routeFeature = new Feature({
-      geometry: new LineString(route),
-    });
-
-    routeFeature.setStyle(
-      new Style({
-        stroke: new Stroke({
-          color: `${color || 'blue'}`,
-          width: 3,
-        }),
-      })
-    );
-
-    const routeSource = new VectorSource({
-      features: [routeFeature],
-    });
-
-    const newRouteLayer = new VectorLayer({
-      source: routeSource,
-    });
-
-    mapRef.current.addLayer(newRouteLayer);
-    setRouteLayer(newRouteLayer);
-
-    setOpenRouteLayers((prevLayers) => [...prevLayers, newRouteLayer]);
-    setUpdateLayers(true);
-  }
 
   const handlePopoverClose = () => {
     if (anchorEl) {
