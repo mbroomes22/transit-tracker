@@ -23,7 +23,9 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Style, Fill, Stroke, Circle as CircleStyle } from 'ol/style';
 
-console.log("REACT_APP_GEOPS_API_KEY:", process.env.REACT_APP_GEOPS_API_KEY);
+console.log("process.env.REACT_APP_GEOPS_API_KEY:", process.env.REACT_APP_GEOPS_API_KEY);
+console.log("ENV[REACT_APP_GEOPS_API_KEY]:", ENV["REACT_APP_GEOPS_API_KEY"]);
+
 
 const trackerLayer = new TrackerLayer({
   url: 'wss://api.geops.io/tracker-ws/v1/ws',
