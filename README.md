@@ -15,8 +15,8 @@ The coolest dang train tracking program that you ever did see.
 Install deps: `gem install bundler && bundle install`.  Run `bundle exec rake` to run the tests, or `bundle exec rake run` to run the program.
 
 Here is a video of the site run on localhost:
-[![Watch the first video](./site/transit-tracker-gif-1)]
-[![Watch the second video](./site/transit-tracker-gif-2)]
+![Watch the first video](site/transit-tracker-gif-1)
+![Watch the second video](site/transit-tracker-gif-2)
 
 APIs from (https://developer.geops.io/) & (https://www.mbta.com/developers/v3-api):
 Realtime Websocket API - To track Vehicle positions & stop sequences based on scheduled times & real time updates.
