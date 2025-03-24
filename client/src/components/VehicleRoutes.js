@@ -54,7 +54,7 @@ function TripSchedule() {
         };
     
         fetchData();
-        }, [organizeSchedule, routeDistance, selectedLine]);
+        }, [organizeSchedule, routeDistance, selectedLine, inboundDirections, outboundDirections]);
 
         const handleLineChange = (event) => {
             setSelectedLine(event.target.value);

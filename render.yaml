@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: transit-tracker-client
+    env: static
+    staticPublishPath: client/build
+    buildCommand: cd client && npm install && npm run build
