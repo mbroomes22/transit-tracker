@@ -19,8 +19,10 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: michellebroomes # role previously added
-  password: ENV[DATABASE_PASSWORD] # variable previously added
+  username: <%= ENV["POSTGRES_USER"] %>
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
+  host: <%= ENV["POSTGRES_HOST"] %>
+  port: <%= ENV["POSTGRES_PORT"] || 5432 %>
 # You must remove the '+' signs to be able to migrate your database
 
 
@@ -85,9 +87,11 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: quote_editor_production
-    username: quote_editor
-    password: ENV["QUOTE_EDITOR_DATABASE_PASSWORD"]
+    database: <%= ENV["POSTGRES_DB"] %>
+    username: <%= ENV["POSTGRES_USER"] %>
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
+    host: <%= ENV["POSTGRES_HOST"] %>
+    port: <%= ENV["POSTGRES_PORT"] || 5432 %>
   cache:
     <<: *primary_production
     database: quote_editor_production_cache
