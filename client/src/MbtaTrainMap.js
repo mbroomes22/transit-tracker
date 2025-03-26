@@ -6,6 +6,7 @@ import ne_regional_transport_map from './maps/New_England_Regional_Transportatio
 import rapid_transit_map from './maps/mbta_rapid_transit_&_commuter_rail.png';
 import './stylesheets/App.css';
 import LiveMap from './LiveMap.js';
+import Header from './Header.js';
 
 function MbtaTrainMap() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -27,6 +28,7 @@ function MbtaTrainMap() {
   
   return (
     <div className="App">
+      <Header />
       <header className="App-header">
         <button onClick={toggleMap} className="switch-map">
           {showLiveMap ? 'Show Static Map' : 'Show Live Map'}

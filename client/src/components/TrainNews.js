@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Link } from 'react-router-dom';
+import Header from './Header.js';
 import axios from 'axios';
 
 function TrainNews() {
@@ -53,16 +53,7 @@ function TrainNews() {
 
     return (
         <div>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/">Train Map</Link>
-                    </li>
-                    <li>
-                        <Link to="/schedule">Train Schedule</Link>
-                    </li>
-                </ul>
-            </nav>
+            <Header />
             <div className="intro-block">
             <h1>Train News</h1>
             <p>Welcome to Train News!</p>

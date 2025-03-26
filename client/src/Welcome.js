@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { Link } from 'react-router-dom';
+import Header from './Header.js';
 import EntryScreen from './EntryScreen.js';
-import MbtaTrainMap from './MbtaTrainMap.js';
+import Home from './Home.js';
 
 function Welcome() {
     const [hideWelcome, setHideWelcome] = useState(() => {
@@ -45,17 +45,8 @@ function Welcome() {
             {showWelcome && <div className="welcome-screen"><EntryScreen onCheckboxChange={handleCheckboxChange} /></div>}
             {!showWelcome && (
                 <div>
-                    <nav>
-                        <ul>
-                            <li>
-                                <Link to="/news">Train News</Link>
-                            </li>
-                            <li>
-                                <Link to="/schedule">Train Schedule</Link>
-                            </li>
-                        </ul>
-                    </nav>
-                    <MbtaTrainMap />
+                    <Header />
+                    <Home />
                 </div>
                 )}
         </div>

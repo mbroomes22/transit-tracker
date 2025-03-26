@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback, useMemo} from 'react';
-import { Link } from 'react-router-dom';
+import Header from './Header.js';
 import axios from 'axios';
 
 function TripSchedule() {
@@ -96,16 +96,7 @@ function TripSchedule() {
         const outboundTripStops = getTripStops(outboundTrip, currentOutboundTripIndex, outboundRouteDist).sort((a, b) => a.stop_id - b.stop_id);;
     return (
         <div>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/">Train Map</Link>
-                    </li>
-                    <li>
-                        <Link to="/news">Train News</Link>
-                    </li>
-                </ul>
-            </nav>
+            <Header />
             <div className="intro-block">
                 <h1>Trip Schedule</h1>
                 <p>Welcome to Trip Schedule!</p>
