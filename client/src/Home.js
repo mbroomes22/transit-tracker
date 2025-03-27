@@ -1,10 +1,10 @@
-import React from React;
+import React from "react";
 
 
 function Home() {
     return(
         <div>
-            <h>Transit Tracker</h>
+            <h1>Transit Tracker</h1>
             <div>
                 Plan your trip
             </div>

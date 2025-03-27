@@ -5,6 +5,9 @@ import Welcome from './Welcome.js';
 import TrainNews from './components/TrainNews.js';
 import TripSchedule from './components/VehicleRoutes.js';
 import TripPlanner from './TripPlanner.js';
+import SavedTrips from './SavedTrips.js';
+import Login from './Login.js'
+import MyAccount from './MyAccount.js';
 
 function App() {
   return (
@@ -15,6 +18,9 @@ function App() {
         <Route path="/news" element={<TrainNews />} />
         <Route path="/schedule" element={<TripSchedule />} />
         <Route path="/trip-planner" element={<TripPlanner />} />
+        <Route path="/saved-trips" element={<SavedTrips />} />
+        <Route path="/my-account" element={<MyAccount />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );

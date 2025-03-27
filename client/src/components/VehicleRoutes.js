@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback, useMemo} from 'react';
-import Header from './Header.js';
+import Header from '../Header.js';
 import axios from 'axios';
 
 function TripSchedule() {

@@ -329,3 +329,37 @@ span.rt-route-icon {
   align-items: center;
   justify-content: center;
 }
+
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid #5b6dcd;
+  padding: 2%;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 5vh;
+  padding: 2vh;
+  border: solid #5b6dcd 10px;
+  background-color: whitesmoke;
+  max-width: 800px;
+  width: 90%;
+  margin: 5vh auto;
+}
+
+.save-trip-button {
+  background-color: transparent;
+  color: rgb(12, 8, 8);
+  border: 2px solid black;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  cursor: pointer;
+}
