@@ -181,6 +181,7 @@ const LiveMap = () => {
             virtualAnchor.style.top = `${pixel[1]}px`;
             mapContainer.appendChild(virtualAnchor);
             setAnchorEl(virtualAnchor);
+            handleStationClick(coordinates);
           }
         } else {
           setLineInfos(null);
@@ -232,6 +233,13 @@ const LiveMap = () => {
       anchorEl.remove();
     }
     setAnchorEl(null);
+  };
+
+  const handleStationClick = (coordinates) => {
+    if (mapRef.current) {
+      mapRef.current.getView().setCenter(coordinates); // Center the map on the stop's coordinates
+      mapRef.current.getView().setZoom(15); // Optional: Adjust the zoom level
+    }
   };
 
   return (
@@ -292,6 +300,10 @@ const LiveMap = () => {
                         )}
                         lineInfos={lineInfos}
                         trackerLayer={trackerLayer}
+                        onStationClick={(station) => {
+                          const coordinates = station.coordinate; // Assuming `station.coordinate` contains the stop's coordinates
+                          handleStationClick(coordinates);
+                        }}
                       />
                     </div>
                   </div>

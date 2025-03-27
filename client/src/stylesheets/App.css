@@ -191,6 +191,7 @@ body {
   margin:1px;
   position: absolute;
   top: 10%;
+  transform: translateX(-50%);
   min-width: 300px;
   max-width: 450px;
   box-shadow: 0 10px 15px rgba(53, 53, 53, .125);
