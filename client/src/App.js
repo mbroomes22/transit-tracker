@@ -8,6 +8,7 @@ import TripPlanner from './TripPlanner.js';
 import SavedTrips from './SavedTrips.js';
 import Login from './Login.js'
 import MyAccount from './MyAccount.js';
+import AccountRegistration from './AccountRegistration.js';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/saved-trips" element={<SavedTrips />} />
         <Route path="/my-account" element={<MyAccount />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<AccountRegistration />} />
       </Routes>
     </Router>
   );
