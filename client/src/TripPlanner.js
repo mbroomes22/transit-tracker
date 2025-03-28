@@ -20,29 +20,31 @@ function TripPlanner() {
     return(
         <div>
             <Header />
-            <div className="trip-planner-container">
+            <div className="trip-planner">
                 <h2>Plan Your Trip</h2>
-                <form>
-                    <div>
-                        <label htmlFor="start-location">Start Location:</label>
-                        <input type="text" id="start-location" name="start-location" required />
-                    </div>
-                    <div>
-                        <label htmlFor="end-location">End Location:</label>
-                        <input type="text" id="end-location" name="end-location" required />
-                    </div>
-                    <button type="submit">Get Directions</button>
-                </form>
-                <div className="trip-results">
-                    <h3>Trip Results</h3>
-                    <p>Your trip details will appear here.</p>
-                    <div>
-                        <p> Save this trip </p>
-                        {savedTrip ? (
-                            <button className="save-trip-button" onClick={handleDelete}><BookmarkIcon /></button>
-                            ) : (
-                            <button className="save-trip-button" onClick={handleSave}><BookmarkBorderIcon /></button>
-                            )}
+                <div className="trip-planner-container">
+                    <form>
+                        <div>
+                            <label htmlFor="start-location">Start Location:</label>
+                            <input type="text" id="start-location" name="start-location" required />
+                        </div>
+                        <div>
+                            <label htmlFor="end-location">End Location:</label>
+                            <input type="text" id="end-location" name="end-location" required />
+                        </div>
+                        <button type="submit">Get Directions</button>
+                    </form>
+                    <div className="trip-results">
+                        <h3>Trip Results</h3>
+                        <p>Your trip details will appear here.</p>
+                        <div>
+                            <p> Save this trip </p>
+                            {savedTrip ? (
+                                <button className="save-trip-button" onClick={handleDelete}><BookmarkIcon /></button>
+                                ) : (
+                                <button className="save-trip-button" onClick={handleSave}><BookmarkBorderIcon /></button>
+                                )}
+                        </div>
                     </div>
                 </div>
             </div>

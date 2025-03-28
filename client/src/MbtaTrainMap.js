@@ -12,6 +12,7 @@ function MbtaTrainMap() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showLiveMap, setShowLiveMap] = useState(false);
   const [selectedMap, setSelectedMap] = useState(basic_mbta_map)
+  const [mapName, setMapName] = useState('MBTA Map');
 
   const toggleMap = () => {
     setShowLiveMap((prevShowLiveMap) => !prevShowLiveMap);
@@ -24,6 +25,24 @@ function MbtaTrainMap() {
   const handleMapSelection = (map) => {
     setSelectedMap(map);
     setIsLoaded(false);
+    setMapName(getMapName(map));
+  }
+
+  const getMapName = (map) => {
+    switch (map) {
+      case basic_mbta_map:
+        return 'MBTA Map';
+      case mbta_downtown_map:
+        return 'MBTA Downtown Map';
+      case bus_route_map:
+        return 'Bus Route Map';
+      case ne_regional_transport_map:
+        return 'New England Regional Transportation Map';
+      case rapid_transit_map:
+        return 'Rapid Transit & Commuter Rail Map';
+      default:
+        return '';
+    }
   }
   
   return (
@@ -47,7 +66,7 @@ function MbtaTrainMap() {
               {isLoaded ? (
                 <div>
                   <p>
-                    MBTA map
+                    {mapName}
                   </p>
                 </div>
                 ) : (
