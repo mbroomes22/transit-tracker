@@ -13,6 +13,22 @@ body {
   color: #bd290b
 }
 
+button {
+  background-color: #5b6dcd;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px;
+}
+
+button:active {
+  box-shadow: -1em 0 1.4em #8798b0;
+  transform: translateY(2px);
+}
+
 .App-logo {
   width: 70%;
   height: auto;
@@ -299,6 +315,16 @@ span.rt-route-icon {
   margin: 5px 0px;
 }
 
+.zoom button {
+  background-color: lightgray;
+  color: black;
+  border: 2px solid black;
+  padding: 3px 7px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: auto;
+}
+
 .ol-zoomslider.ol-unselectable.ol-control {
   display: flex;
   justify-content: center;
@@ -398,3 +424,4 @@ span.rt-route-icon {
   justify-content: center;
   height: 100vh;
 }
+
