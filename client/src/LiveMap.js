@@ -134,20 +134,21 @@ const LiveMap = () => {
     const stopName = feature['values_']['name'];
   setPopupContent(stopName);
 
+  // get the coordinates of the clicked stop
   const coordinates = event.coordinate;
   const pixel = mapRef.current.getPixelFromCoordinate(coordinates);
   const mapContainer = document.getElementById('map');
 
+  // Create a virtual anchor element to position the popover
   const virtualAnchor = document.createElement('div');
   virtualAnchor.style.position = 'absolute';
   virtualAnchor.style.left = `${pixel[0]}px`;
   virtualAnchor.style.top = `${pixel[1]}px`;
   mapContainer.appendChild(virtualAnchor);
 
-  setAnchorEl(virtualAnchor);
-  handleStationClick(coordinates);
-  }, [])
-
+  setAnchorEl(virtualAnchor); // Set the anchor element for the popover
+  handleStationClick(coordinates); // Center the map on the stop's coordinates
+  }, []);
 
   useEffect(() => {
     if (!mapRef.current) {
