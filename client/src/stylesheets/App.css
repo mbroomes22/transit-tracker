@@ -252,7 +252,7 @@ span.rt-route-icon {
 }
 
 .rte-progress-and-stops {
-  font-size: 16px;
+  font-size: 9px;
   flex-grow: 20;
   flex-shrink: 0;
   overflow-y: scroll;
@@ -296,8 +296,24 @@ span.rt-route-icon {
   padding: 0 3px;
 }
 
-.rt-passed {
+.LEAVING {
   opacity: .7;
+}
+
+@keyframes blink {
+  0% {
+    color: red; /* Start color */
+  }
+  50% {
+    color: blue; /* Midway color */
+  }
+  100% {
+    color: red; /* End color */
+  }
+}
+
+.BOARDING {
+  animation: blink 1s infinite;
 }
 
 .zoom {

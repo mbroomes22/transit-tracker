@@ -18,6 +18,15 @@ export const pad = (integer) => {
     const date = new Date(timeInMs);
     return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
   };
+
+  export const convertTo12HourTime = (timeInMs) => {
+      const date = new Date(timeInMs); // Convert the time to a Date object
+      const hours = date.getHours(); // Get hours in 24-hour format
+      const minutes = date.getMinutes(); // Get minutes
+      const period = hours >= 12 ? 'PM' : 'AM'; // Determine AM/PM
+      const hours12 = hours % 12 || 12; // Convert to 12-hour format (0 becomes 12)
+      return `${hours12}:${minutes.toString().padStart(2, '0')} ${period}`;
+    };
   
   /**
    * Returns a string representing a delay.

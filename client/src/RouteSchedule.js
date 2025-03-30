@@ -8,7 +8,7 @@ import lastStation from "./RouteSchedule/lastStation.png";
 import line from "./RouteSchedule/line.png";
 import station from "./RouteSchedule/station.png";
 import ReactTransitPropTypes from "./propTypes";
-import { getDelayString as defaultGetDelayString, getHoursAndMinutes} from "./utils/timeUtils";
+import { getDelayString as defaultGetDelayString, convertTo12HourTime } from "./utils/timeUtils";
 
 const { getBgColor } = realtimeConfig;
 
@@ -152,6 +152,7 @@ function RouteStop({
   const isLastStation = idx === stations.length - 1;
   const isNotStation = isNotStop(stop);
   const [isStationPassed, setIsStationPassed] = useState(false);
+  const travelState = stop.state;
 
   useEffect(() => {
     let timeout = null;
@@ -174,9 +175,10 @@ function RouteStop({
     <div
       className={[
         "rt-route-station",
+        travelState,
         isStationPassed ? " rt-passed" : "",
         isNotStation ? " rt-no-stop" : "",
-      ].join("")}
+      ].join(" ")}
       onClick={(e) => {
         return onStationClick(stop, e);
       }}
@@ -216,14 +218,14 @@ function RouteStop({
             cancelled ? "rt-route-cancelled" : ""
           }`}
         >
-          {getHoursAndMinutes(aimedArrivalTime)}
+          {convertTo12HourTime(aimedArrivalTime)}
         </span>
         <span
           className={`rt-route-time-departure ${
             cancelled ? "rt-route-cancelled" : ""
           }`}
         >
-          {getHoursAndMinutes(aimedDepartureTime)}
+          {convertTo12HourTime(aimedDepartureTime)}
         </span>
       </div>
       {renderStationImg(stations, idx, isStationPassed, isNotStation)}
