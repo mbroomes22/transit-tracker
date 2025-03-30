@@ -126,6 +126,28 @@ const LiveMap = () => {
     setUpdateLayers(true);
   }, []);
 
+  // Handle stop click event
+  // display stop name in the popup
+  // center the map on the stop's coordinates
+  // add the stop's coordinates to the map
+  const handleStopClick = useCallback((feature, event) => {
+    const stopName = feature['values_']['name'];
+  setPopupContent(stopName);
+
+  const coordinates = event.coordinate;
+  const pixel = mapRef.current.getPixelFromCoordinate(coordinates);
+  const mapContainer = document.getElementById('map');
+
+  const virtualAnchor = document.createElement('div');
+  virtualAnchor.style.position = 'absolute';
+  virtualAnchor.style.left = `${pixel[0]}px`;
+  virtualAnchor.style.top = `${pixel[1]}px`;
+  mapContainer.appendChild(virtualAnchor);
+
+  setAnchorEl(virtualAnchor);
+  handleStationClick(coordinates);
+  }, [])
+
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -170,18 +192,7 @@ const LiveMap = () => {
           } 
           else {
           // handle stop clicks
-            const stopName = feature['values_']['name'];
-            setPopupContent(stopName);
-            const coordinates = event.coordinate;
-            const pixel = mapRef.current.getPixelFromCoordinate(coordinates);
-            const mapContainer = document.getElementById('map');
-            const virtualAnchor = document.createElement('div');
-            virtualAnchor.style.position = 'absolute';
-            virtualAnchor.style.left = `${pixel[0]}px`;
-            virtualAnchor.style.top = `${pixel[1]}px`;
-            mapContainer.appendChild(virtualAnchor);
-            setAnchorEl(virtualAnchor);
-            handleStationClick(coordinates);
+          handleStopClick(feature, event);
           }
         } else {
           setLineInfos(null);
@@ -196,7 +207,7 @@ const LiveMap = () => {
 
       setMapInitialized(true);
     }
-  }, [displayStopsOnMap, highlightRoute]);
+  }, [displayStopsOnMap, highlightRoute, handleStopClick]);
 
 
   // Remove all highlighted routes & stops except for the most recently clicked vehicle when updateLayers is true.
