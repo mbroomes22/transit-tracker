@@ -425,3 +425,7 @@ span.rt-route-icon {
   height: 100vh;
 }
 
+#popup-closer {
+  color: black;
+  font-size: larger;
+}
