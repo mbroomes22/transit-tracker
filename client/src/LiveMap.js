@@ -5,11 +5,11 @@ import OSM from 'ol/source/OSM';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import Overlay from 'react-spatial/components/Overlay';
+import OpenLayersOverlay from 'ol/Overlay';
 import { geopsTheme } from '@geops/geops-ui';
 import { ThemeProvider, ToggleButton } from '@mui/material';
 import { FaFilter } from 'react-icons/fa';
 import Button from '@mui/material/Button';
-import Popover from '@mui/material/Popover';
 import FitExtent from 'react-spatial/components/FitExtent';
 import BasicMap from 'react-spatial/components/BasicMap';
 import Geolocation from 'react-spatial/components/Geolocation';
@@ -45,8 +45,6 @@ const LiveMap = () => {
   const [open, setOpen] = useState(false);
   const [openVectorLayers, setOpenVectorLayers] = useState([]);
   const [openRouteLayers, setOpenRouteLayers] = useState([]);
-  const [popupContent, setPopupContent] = useState('');
-  const [anchorEl, setAnchorEl] = useState(null);
   const [updateLayers, setUpdateLayers] = useState(false);
   const [closeAllLayers, setCloseAllLayers] = useState(false);
   const mapRef = useRef(null);
@@ -226,27 +224,37 @@ const LiveMap = () => {
     }
   }, [updateLayers, closeAllLayers, openRouteLayers, openVectorLayers]);
 
-
-  const handlePopoverClose = () => {
-    if (anchorEl) {
-      anchorEl.remove();
-    }
-    setAnchorEl(null);
-  };
-
   const showStopName = (coordinates, stopName) => {
-    const mapContainer = document.getElementById('map');
-    const pixel = mapRef.current.getPixelFromCoordinate(coordinates);
+    if (!mapRef.current.getOverlayById('stop-popup')) {
+      const overlayElement = document.createElement('div');
+      overlayElement.className = 'popup-overlay ';
 
-    // Create a virtual anchor element to position the popover
-    const virtualAnchor = document.createElement('div');
-    virtualAnchor.style.position = 'absolute';
-    virtualAnchor.style.left = `${pixel[0]}px`;
-    virtualAnchor.style.top = `${pixel[1]}px`;
-    mapContainer.appendChild(virtualAnchor);
+      const overlay = new OpenLayersOverlay({
+        element: overlayElement,
+        positioning: 'top-center', // Position the popup relative to the coordinates
+        stopEvent: false,
+        id: 'stop-popup', // Assign an ID to the overlay for easy reference
+      });
+  
+      mapRef.current.addOverlay(overlay);
+    }
+  
+    // Update the overlay position and content
+    const overlay = mapRef.current.getOverlayById('stop-popup');
+    overlay.setPosition(coordinates); // Set the position using map coordinates
+    // Add the close button and stop name to the overlay content
+    overlay.getElement().innerHTML = `
+    <div class="popup-content">
+      <button id="popup-close-button" class="popup-close-button">&times;</button>
+      <div>${stopName}</div>
+    </div>
+  `; // Update the content
 
-    setAnchorEl(virtualAnchor); // Set the anchor element for the popover
-    setPopupContent(stopName); // Set the stop name to display in the popover
+    // Add an event listener to the close button
+    const closeButton = document.getElementById('popup-close-button');
+    closeButton.addEventListener('click', () => {
+      mapRef.current.removeOverlay(overlay); // Remove the overlay from the map
+    });
   }
 
   // Center the map on the clicked stop's coordinates
@@ -330,32 +338,6 @@ const LiveMap = () => {
               Fit to Boston
             </Button>
           </FitExtent>
-          <Popover 
-            open={Boolean(anchorEl)}
-            anchorEl={anchorEl}
-            onClose={handlePopoverClose}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
-            sx={{
-              '& .MuiPopover-paper': {
-                        backgroundColor: 'white',
-                        padding: '10px',
-                        borderRadius: '8px',
-                        fontWeight: 'bold',
-                        boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',},
-            }}
-          > 
-            <div className='popup-content'>
-              <div>Stop Name:</div>
-              <div>{popupContent}</div>
-            </div>
-          </Popover>
         </>
     )}
     </div>

@@ -59,10 +59,6 @@ button:active {
   padding: 1vh;
   max-width: 800px;
   width: 90%;
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column; */
 }
 
 .more-info {
@@ -366,12 +362,38 @@ span.rt-route-icon {
   border: 1px solid black;
 }
 
-.popup-content {
+.popup-overlay {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: white;
+  padding: 2%;
 }
+
+.popup-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row-reverse;
+  padding: 1%;
+  background: white;
+  font-size: 16px;
+}
+
+.popup-content button {
+  float: right;
+  background: none;
+  color: black;
+  border: none;
+  font-size: 16px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.popup-content button:hover {
+  color: red;
+} 
 
 .nav-bar {
   display: flex;
