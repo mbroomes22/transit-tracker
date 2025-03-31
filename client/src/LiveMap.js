@@ -43,7 +43,6 @@ const LiveMap = () => {
   const [mapInitialized, setMapInitialized] = useState(false);
   const [filterActive, setFilterActive] = useState(false);
   const [open, setOpen] = useState(false);
-  const [currentTransport, setCurrentTransport] = useState(null);
   const [openVectorLayers, setOpenVectorLayers] = useState([]);
   const [openRouteLayers, setOpenRouteLayers] = useState([]);
   const [popupContent, setPopupContent] = useState('');
@@ -176,7 +175,6 @@ const LiveMap = () => {
           // 3. React to changes in planned routes or schedules.
           if (vehicleInfo['train_id']) {
             // handle vehicle clicks
-            setCurrentTransport(vehicleInfo['type'])
             const vehicleId = vehicleInfo['train_id']
             trackerLayer.api.subscribeStopSequence(vehicleId, (response) => {
               if (response && response.content && Array.isArray(response.content) && response.content.length > 0) { 
@@ -288,7 +286,7 @@ const LiveMap = () => {
                     x
                   </button>
                   <div className='menu-collapsible-vertical'>
-                    <div>{currentTransport}</div>
+                    <div>{lineInfos && lineInfos.type} schedule</div>
                     <div>
                       <RouteSchedule
                         className='rte-progress-and-stops'
@@ -311,6 +309,7 @@ const LiveMap = () => {
                             <FaFilter />              
                           </ToggleButton> 
                         )}
+                        // headerTitle=`${lineInfos.type} Schedule`
                         lineInfos={lineInfos}
                         trackerLayer={trackerLayer}
                         onStationClick={(station) => {

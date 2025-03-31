@@ -302,13 +302,13 @@ span.rt-route-icon {
 
 @keyframes blink {
   0% {
-    color: red; /* Start color */
+    color: rgb(178, 93, 1); /* Start color */
   }
   50% {
     color: blue; /* Midway color */
   }
   100% {
-    color: red; /* End color */
+    color: orange; /* End color */
   }
 }
 
