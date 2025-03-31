@@ -126,28 +126,16 @@ const LiveMap = () => {
     setUpdateLayers(true);
   }, []);
 
-  // Handle stop click event
   // display stop name in the popup
   // center the map on the stop's coordinates
-  // add the stop's coordinates to the map
   const handleStopClick = useCallback((feature, event) => {
+    // get the name of the clicked stop
     const stopName = feature['values_']['name'];
-  setPopupContent(stopName);
+    // get the coordinates of the clicked stop
+    const coordinates = event.coordinate;
 
-  // get the coordinates of the clicked stop
-  const coordinates = event.coordinate;
-  const pixel = mapRef.current.getPixelFromCoordinate(coordinates);
-  const mapContainer = document.getElementById('map');
-
-  // Create a virtual anchor element to position the popover
-  const virtualAnchor = document.createElement('div');
-  virtualAnchor.style.position = 'absolute';
-  virtualAnchor.style.left = `${pixel[0]}px`;
-  virtualAnchor.style.top = `${pixel[1]}px`;
-  mapContainer.appendChild(virtualAnchor);
-
-  setAnchorEl(virtualAnchor); // Set the anchor element for the popover
-  handleStationClick(coordinates); // Center the map on the stop's coordinates
+    showStopName(coordinates, stopName);
+    handleStationClick(coordinates); // Center the map on the stop's coordinates
   }, []);
 
   useEffect(() => {
@@ -246,6 +234,22 @@ const LiveMap = () => {
     setAnchorEl(null);
   };
 
+  const showStopName = (coordinates, stopName) => {
+    const mapContainer = document.getElementById('map');
+    const pixel = mapRef.current.getPixelFromCoordinate(coordinates);
+
+    // Create a virtual anchor element to position the popover
+    const virtualAnchor = document.createElement('div');
+    virtualAnchor.style.position = 'absolute';
+    virtualAnchor.style.left = `${pixel[0]}px`;
+    virtualAnchor.style.top = `${pixel[1]}px`;
+    mapContainer.appendChild(virtualAnchor);
+
+    setAnchorEl(virtualAnchor); // Set the anchor element for the popover
+    setPopupContent(stopName); // Set the stop name to display in the popover
+  }
+
+  // Center the map on the clicked stop's coordinates
   const handleStationClick = (coordinates) => {
     if (mapRef.current) {
       mapRef.current.getView().setCenter(coordinates); // Center the map on the stop's coordinates
