@@ -535,3 +535,53 @@ span.rt-route-icon {
   width: 90%;
   margin: 5vh auto;
 }
+
+@media only screen and (max-width: 600px) {
+  .home-box{
+    height: 10vh;
+    width: 40vw;
+  }
+  
+  .home {
+    flex-direction: column;
+    margin-top: 15%;
+    overflow-y: scroll;
+    margin-top: 10%;
+    margin-bottom: 20%;
+  }
+
+  .App-header {
+    margin-top: 10%;
+    padding-top: 20%;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    top: 100vh;
+    margin:auto;
+  }
+
+  .static-map-container{
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .map-content{
+    width: 130%;
+    height: 150%;
+  }
+
+  .nav-bar {
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+    width: 100%;
+    overflow-x: scroll;
+  }
+
+  .route-schedules {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+  }
+}

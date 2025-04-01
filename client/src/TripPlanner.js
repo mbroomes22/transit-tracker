@@ -2,9 +2,13 @@ import React, {useState} from "react";
 import Header from './Header.js';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 function TripPlanner() {
     const [savedTrip, setSavedTrip] = useState(false); // Replace with actual logic to check if the trip is saved
+    const [open, setOpen] = React.useState(false);
 
     const handleSave = () => {
         // Logic to save the trip
@@ -16,6 +20,41 @@ function TripPlanner() {
         setSavedTrip(false);
         console.log("Trip deleted!");
     }
+
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+    const action = (
+        <React.Fragment>
+          <button 
+          color="secondary" 
+          size="small" 
+          onClick={() => {
+            handleClose();
+            handleDelete();
+            }}>
+            UNDO
+          </button>
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </React.Fragment>
+      );
 
     return(
         <div>
@@ -42,8 +81,21 @@ function TripPlanner() {
                             {savedTrip ? (
                                 <button className="save-trip-button" onClick={handleDelete}><BookmarkIcon /></button>
                                 ) : (
-                                <button className="save-trip-button" onClick={handleSave}><BookmarkBorderIcon /></button>
-                                )}
+                                <button 
+                                className="save-trip-button" 
+                                onClick={() => {
+                                    handleSave(); 
+                                    handleClick();
+                                }}
+                                ><BookmarkBorderIcon /></button>
+                            )}
+                            <Snackbar
+                            open={open}
+                            autoHideDuration={8000}
+                            onClose={handleClose}
+                            message="Trip saved!"
+                            action={action}
+                            />
                         </div>
                     </div>
                 </div>

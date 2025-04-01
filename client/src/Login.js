@@ -1,6 +1,11 @@
 import React from 'react';
 import Header from './Header.js';
 
+// sent get request to server to login a user
+// send message to the user if the login was successful
+// send message to the user if the login was unsuccessful
+// send message to the user if the user is not registered
+// user should not be able to access this page if they're already logged in
 function Login() {
  return(
     <div>

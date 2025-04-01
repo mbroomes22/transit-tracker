@@ -1,6 +1,10 @@
 import React from 'react';
 import Header from './Header';
 
+// sent post request to server to register a new user
+// verify that the user is not already registered
+// if the user is already registered, send a message to the user
+// send a message to the user if the registration was successful
 function AccountRegistration() {
     return(
         <div>
