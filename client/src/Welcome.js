@@ -25,7 +25,7 @@ function Welcome() {
                 setShowWelcome(false);
 
                 localStorage.setItem('hasSeenWelcome', true)
-            }, 5000) // 5 sec
+            }, 15000) // 15 sec
             return () => clearTimeout(timer) // cleanup on unmount
         } else {
             setShowWelcome(false) // hide welcome screen if already seen or hideWelcome is true

@@ -3,20 +3,19 @@ import React from "react";
 
 function Home() {
     return(
-        <div>
-            <h1>Transit Tracker</h1>
-            <div>
+        <div className="home">
+            <a className="home-box" href="/trip-planner">
                 Plan your trip
-            </div>
-            <div>
+            </a>
+            <a className="home-box" href="/schedule">
                 Check train schedules
-            </div>
-            <div>
-                Get the latest news
-            </div>
-            <div>
+            </a>
+            <a className="home-box" href="/alerts">
+                Get the latest service alerts
+            </a>
+            <a className="home-box" href="/maps">
                 View the transit maps
-            </div>
+            </a>
         </div>
     )
 }
