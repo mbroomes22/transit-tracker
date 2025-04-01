@@ -82,9 +82,9 @@ button:active {
   background-position: center;
   background-repeat: no-repeat; 
   z-index: -10;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  padding-top: 10%;
+  display: grid;
+  grid-template-columns: auto auto auto;
 }
 
 .home-box {
@@ -541,8 +541,10 @@ span.rt-route-icon {
     height: 10vh;
     width: 40vw;
   }
-  
+
   .home {
+    display: flex;
+    align-items: center;
     flex-direction: column;
     margin-top: 15%;
     overflow-y: scroll;
