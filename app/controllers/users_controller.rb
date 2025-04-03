@@ -38,7 +38,7 @@ class UsersController < ApplicationController
       end
     end
 
-    # PATCH/PUT /users/1 or /users/1.json
+    # PATCH/PUT /users/1
     def update
       respond_to do |format|
         if @user.update(user_params)
@@ -51,15 +51,17 @@ class UsersController < ApplicationController
       end
     end
 
-    # DELETE /users/1 or /users/1.json
-    # def destroy
-    #   @user.destroy!
+    # DELETE /users/1
+    def destroy
+      @user.destroy!
 
-    #   respond_to do |format|
-    #     format.html { redirect_to users_path, status: :see_other, notice: "User was successfully destroyed." }
-    #     format.json { head :no_content }
-    #   end
-    # end
+      redirect_to users_path, status: 200, notice: "User was successfully deleted."
+
+      # respond_to do |format|
+      #   format.html { redirect_to users_path, status: :see_other, notice: "User was successfully destroyed." }
+      #   format.json { head :no_content }
+      # end
+    end
 
     private
       # Only allow a list of trusted parameters through.
