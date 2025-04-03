@@ -20,6 +20,8 @@ gem "stimulus-rails"
 gem "jbuilder"
 # load environment variables from .env into ENV in development and test
 gem "dotenv-rails", groups: [ :development, :test ]
+# Used for authentication and other login related functions
+gem "devise", "~> 4.9.2"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"

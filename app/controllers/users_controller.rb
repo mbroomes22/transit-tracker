@@ -2,15 +2,16 @@ class UsersController < ApplicationController
     before_action :set_user, only: %i[ show edit update destroy ]
 
     # GET /users or /users.json
+    # only admin can see all users
     def index
       @users = User.all
     end
 
     # GET /users/1
     def show
-      @user = User.find_by(id: params[:id])
+      @user = User.find_by(username: params[:username], password: params[:password])
       if @user.nil?
-        redirect_to users_path, notice: "User not found"
+        redirect_to users_path, notice: "User not found with username and password."
       else
         render :show
       end
