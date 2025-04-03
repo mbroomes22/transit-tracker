@@ -1,6 +1,10 @@
 <p style="color: green"><%= notice %></p>
 
+<% if @user %>
 <%= render @user %>
+<% else %>
+  <p style="color: red">User not found</p>
+<% end %>
 
 <div>
   <%= link_to "Edit this user", edit_user_path(@user) %> |
