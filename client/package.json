@@ -21,6 +21,7 @@
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-query": "^3.39.3",
     "react-router-dom": "^7.3.0",
     "react-scripts": "5.0.1",
     "react-spatial": "^1.12.2",
