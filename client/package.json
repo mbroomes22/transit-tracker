@@ -16,6 +16,7 @@
     "mapbox-gl": "^3.10.0",
     "maplibre-gl": "^5.2.0",
     "mobility-toolbox-js": "^3.2.3",
+    "nuqs": "^2.4.1",
     "ol": "^10.4.0",
     "ol-mapbox-style": "^12.5.0",
     "prop-types": "^15.8.1",
