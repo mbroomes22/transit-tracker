@@ -1,9 +1,14 @@
 import React, {useEffect, useState} from 'react';
+// import {useSearchParams} from 'react-router-dom';
 import Header from '../Header.js';
 import axios from 'axios';
 
 function TrainNews() {
     const [apiData, setApiData] = useState(null);
+    // const [searchParams, setSearchParams] = useSearchParams('');
+    // const [page, setPage] = useQueryState(1);
+    // const [perPage, setPerPage] = useQueryState(10);
+
     const [selectedLine, setSelectedLine] = useState('');
     const [selectedMoreInfo, setSelectedMoreInfo] = useState(null);
     const [page, setPage] = useState(1);
@@ -26,6 +31,14 @@ function TrainNews() {
     
         fetchData();
       }, [selectedLine, page, perPage]);
+
+      // useEffect(() => {
+      //   window.history.pushState(
+      //     null,
+      //     "",
+      //     `${selectedLine ? `/train-news/${selectedLine}?page=${page}&per-page=${perPage}` : '/train-news'}`,
+      //   )
+      // }, [selectedLine, page, perPage]);
 
       const handleLineChange = (event) => {
         setSelectedLine(event.target.value);

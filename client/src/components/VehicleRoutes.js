@@ -56,6 +56,14 @@ function TripSchedule() {
         fetchData();
         }, [organizeSchedule, routeDistance, selectedLine, inboundDirections, outboundDirections]);
 
+        useEffect(() => {
+            window.history.pushState(
+                null,
+                "",
+                `${selectedLine ? `/schedule/${selectedLine}` : '/schedule'}`,
+              )
+        }, [selectedLine]);
+        
         const handleLineChange = (event) => {
             setSelectedLine(event.target.value);
         }
