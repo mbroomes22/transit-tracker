@@ -5,6 +5,7 @@ import axios from 'axios';
 
 function TrainNews() {
     const [apiData, setApiData] = useState(null);
+    // add this line to use the search params in the URL
     // const [searchParams, setSearchParams] = useSearchParams('');
     // const [page, setPage] = useQueryState(1);
     // const [perPage, setPerPage] = useQueryState(10);
